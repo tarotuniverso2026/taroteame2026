@@ -243,3 +243,35 @@ document.addEventListener("click",function(e){
     if(paypal) paypal.style.display="block";
   }
 },300);
+  
+document.addEventListener("click", function(e){
+  const free=e.target.closest('.price-card[data-free="true"]');
+  if(!free)return;
+
+  state.duration=10;
+  state.price=8;
+  state.free=true;
+  state.time="";
+
+  render();
+
+  const paypal=document.querySelector("#paypal-button-container");
+  const freeBtn=document.querySelector("#free-booking-btn");
+  const total=document.querySelector("#summary-price");
+  const lectura=document.querySelector("#summary-duration");
+
+  if(paypal){
+    paypal.innerHTML="";
+    paypal.style.display="none";
+  }
+
+  if(freeBtn){
+    freeBtn.hidden=false;
+    freeBtn.style.display="block";
+  }
+
+  if(total) total.textContent="0 €";
+  if(lectura) lectura.textContent="10 min · Gratis";
+
+  loadAvailability();
+});
