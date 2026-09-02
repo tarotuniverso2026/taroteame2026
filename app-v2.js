@@ -217,3 +217,29 @@ document.addEventListener("click",function(e){
 
   },100);
 })();
+  setInterval(function(){
+  const freeBtn=document.querySelector("#free-booking-btn");
+  const paypal=document.querySelector("#paypal-button-container");
+  const total=document.querySelector("#summary-price");
+  const lectura=document.querySelector("#summary-duration");
+
+  if(!freeBtn)return;
+
+  if(state.free){
+    freeBtn.style.display="block";
+    freeBtn.hidden=false;
+
+    if(paypal){
+      paypal.innerHTML="";
+      paypal.style.display="none";
+    }
+
+    if(total) total.textContent="0 €";
+    if(lectura) lectura.textContent="10 min · Gratis";
+  }else{
+    freeBtn.style.display="none";
+    freeBtn.hidden=true;
+
+    if(paypal) paypal.style.display="block";
+  }
+},300);
