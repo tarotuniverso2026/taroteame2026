@@ -140,6 +140,7 @@ $("#year").textContent=new Date().getFullYear();state.date=date.value;render();l
 
     }
   }
+  
 
   freeButton.onclick=confirmFree;
 
@@ -172,6 +173,7 @@ $("#year").textContent=new Date().getFullYear();state.date=date.value;render();l
 
     e.preventDefault();
     e.stopImmediatePropagation();
+    
 
     state.duration=10;
     state.price=8;
@@ -186,5 +188,32 @@ $("#year").textContent=new Date().getFullYear();state.date=date.value;render();l
     loadAvailability();
 
   },true);
+  /* TAROTEAME - AJUSTE VISUAL RESERVA GRATUITA */
+document.addEventListener("click",function(e){
 
+  const free=e.target.closest('.price-card[data-free="true"]');
+
+  if(!free)return;
+
+  setTimeout(function(){
+
+    const total=document.querySelector("#summary-price");
+    const lectura=document.querySelector("#summary-duration");
+    const paypal=document.querySelector("#paypal-button-container");
+    const freeBtn=document.querySelector("#free-booking-btn");
+
+    if(total)total.textContent="0 €";
+    if(lectura)lectura.textContent="10 min · Gratis";
+
+    if(paypal){
+      paypal.innerHTML="";
+      paypal.style.display="none";
+    }
+
+    if(freeBtn){
+      freeBtn.hidden=false;
+      freeBtn.style.display="block";
+    }
+
+  },100);
 })();
