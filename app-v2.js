@@ -243,34 +243,149 @@ document.addEventListener("click",function(e){
     if(paypal) paypal.style.display="block";
   }
 },300);
-  
-document.addEventListener("click", function(e){
-  const free=e.target.closest('.price-card[data-free="true"]');
-  if(!free)return;
+  const cfg = window.TAROTEAME_CONFIG || {};
+const sb = supabase.createClient(
+  cfg.SUPABASE_URL,
+  cfg.SUPABASE_PUBLISHABLE_KEY
+);
 
-  state.duration=10;
-  state.price=8;
-  state.free=true;
-  state.time="";
+const prices = {
+  10: 8,
+  20: 15,
+  30: 23,
+  60: 48
+};
 
-  render();
+let state = {
+  duration: 30,
+  price: 23,
+  free: false,
+  date: "",
+  time: "",
+  availability: []
+};
 
-  const paypal=document.querySelector("#paypal-button-container");
-  const freeBtn=document.querySelector("#free-booking-btn");
-  const total=document.querySelector("#summary-price");
-  const lectura=document.querySelector("#summary-duration");
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
 
-  if(paypal){
-    paypal.innerHTML="";
-    paypal.style.display="none";
+function pad(n) {
+  return String(n).padStart(2, "0");
+}
+
+function label(d) {
+  return d === 60 ? "1 hora" : `${d} min`;
+}
+
+function dateText(v) {
+  if (!v) return "—";
+
+  return new Intl.DateTimeFormat("es-ES", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric"
+  }).format(new Date(v + "T12:00:00"));
+}
+
+function msg(t) {
+  const el = $("#message");
+  if (el) el.textContent = t || "";
+}
+
+/* =========================
+   HORARIOS
+========================= */
+
+async function loadAvailability() {
+  const slots = $("#slots");
+
+  if (!slots) return;
+
+  slots.innerHTML =
+    '<p class="hint">Cargando horarios…</p>';
+
+  if (!state.date) {
+    slots.innerHTML =
+      '<p class="hint">Selecciona una fecha.</p>';
+    return;
   }
 
-  if(freeBtn){
-    freeBtn.hidden=false;
-    freeBtn.style.display="block";
+  try {
+    const { data, error } =
+      await sb.functions.invoke("availability", {
+        body: {
+          date: state.date,
+          duration: state.duration
+        }
+      });
+
+    if (error) throw error;
+
+    state.availability = data?.slots || [];
+
+    slots.innerHTML = "";
+
+    state.availability.forEach(s => {
+      const b = document.createElement("button");
+
+      b.type = "button";
+      b.className =
+        "slot" + (s.available ? "" : " busy");
+
+      b.textContent = s.time;
+      b.disabled = !s.available;
+      b.title =
+        s.available ? "Disponible" : "Ocupada";
+
+      if (
+        s.time === state.time &&
+        !s.available
+      ) {
+        state.time = "";
+      }
+
+      b.onclick = () => {
+        state.time = s.time;
+
+        $$(".slot").forEach(x =>
+          x.classList.remove("selected")
+        );
+
+        b.classList.add("selected");
+
+        render();
+        renderPayPal();
+        renderFreeButton();
+      };
+
+      slots.appendChild(b);
+    });
+
+    if (!state.availability.length) {
+      slots.innerHTML =
+        '<p class="hint">No hay horas disponibles.</p>';
+    }
+
+  } catch (e) {
+    console.error(e);
+
+    slots.innerHTML =
+      '<p class="hint">No se pudieron cargar las horas. Revisa la configuración de Supabase.</p>';
   }
+}
 
-  if(total) total.textContent="0 €";
-  if(lectura) lectura.textContent="10 min · Gratis";
+/* =========================
+   RESUMEN
+========================= */
 
-  loadAvailability();})();
+function render() {
+  $$("#duration-options button").forEach(b => {
+    b.classList.toggle(
+      "selected",
+      +b.dataset.duration === state.duration
+    );
+  });
+
+  const duration = $("#summary-duration");
+  const price = $("#summary-price");
+  const date = $("#summary-date");
+  const time = $("#
