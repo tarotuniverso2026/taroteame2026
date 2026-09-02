@@ -1,0 +1,100 @@
+import { createClient } from "npm:@supabase/supabase-js@2";
+
+const cors = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
+};
+
+const secretKeys = JSON.parse(
+  Deno.env.get("SUPABASE_SECRET_KEYS")!
+);
+
+const supabase = createClient(
+  Deno.env.get("SUPABASE_URL")!,
+  secretKeys["default"]
+);
+
+const prices: Record<number, number> = {
+  10: 8,
+  20: 15,
+  30: 23,
+  60: 48,
+};
+
+const pad = (n: number) => String(n).padStart(2, "0");
+
+Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") {
+    return new Response("ok", { headers: cors });
+  }
+
+  try {
+    const body = await req.json();
+
+    const date = String(body.date || "");
+    const duration = Number(body.duration);
+
+    if (!date || !prices[duration]) {
+      throw new Error("Datos inválidos");
+    }
+
+    await supabase.rpc("cleanup_expired_bookings");
+
+    const { data: busy, error } = await supabase
+      .from("bookings")
+      .select("start_minute,duration_min")
+      .eq("appointment_date", date)
+      .in("status", ["pending", "confirmed"]);
+
+    if (error) {
+      throw error;
+    }
+
+    const slots = [];
+    const max = 1410 - duration;
+
+    for (let minute = 1020; minute <= max; minute += 30) {
+      const end = minute + duration;
+
+      const overlap = (busy || []).some((booking: any) => {
+        return (
+          minute < booking.start_minute + booking.duration_min &&
+          end > booking.start_minute
+        );
+      });
+
+      slots.push({
+        time: `${pad(Math.floor(minute / 60))}:${pad(minute % 60)}`,
+        available: !overlap,
+      });
+    }
+
+    return new Response(
+      JSON.stringify({ slots }),
+      {
+        status: 200,
+        headers: {
+          ...cors,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  } catch (error) {
+    return new Response(
+      JSON.stringify({
+        error:
+          error instanceof Error
+            ? error.message
+            : String(error),
+      }),
+      {
+        status: 400,
+        headers: {
+          ...cors,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  }
+});
