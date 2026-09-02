@@ -273,5 +273,4 @@ document.addEventListener("click", function(e){
   if(total) total.textContent="0 €";
   if(lectura) lectura.textContent="10 min · Gratis";
 
-  loadAvailability();
-});
+  loadAvailability();})();
