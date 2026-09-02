@@ -65,3 +65,126 @@ const now=new Date();const date=$("#date");date.min=`${now.getFullYear()}-${pad(
 date.onchange=()=>{state.date=date.value;state.time="";render();loadAvailability();renderPayPal()};
 $("#name").oninput=renderPayPal;$("#email").oninput=renderPayPal;
 $("#year").textContent=new Date().getFullYear();state.date=date.value;render();loadAvailability();renderPayPal();
+/* TAROTEAME - RESERVA GRATUITA */
+(function(){
+
+  const freeCard=document.querySelector('.price-card[data-free="true"]');
+
+  if(!freeCard)return;
+
+  const freeButton=document.createElement('button');
+  freeButton.id='free-booking-btn';
+  freeButton.type='button';
+  freeButton.hidden=true;
+  freeButton.textContent='🆓 Confirmar reserva gratuita';
+  freeButton.style.cssText=
+    'width:100%;margin-top:12px;padding:14px;border:0;border-radius:10px;background:#d9aa55;color:#120d18;font-weight:600;font-size:16px;cursor:pointer;';
+
+  const paypal=document.querySelector('#paypal-button-container');
+  paypal.parentNode.insertBefore(freeButton,paypal);
+
+  function freeValid(){
+    const email=document.querySelector('#email').value.trim();
+    return state.date &&
+      state.time &&
+      document.querySelector('#name').value.trim() &&
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  async function confirmFree(){
+
+    if(!freeValid()){
+      msg('Completa nombre, email, fecha y hora.');
+      return;
+    }
+
+    freeButton.disabled=true;
+    msg('Guardando tu reserva gratuita…');
+
+    try{
+
+      const {data,error}=await sb.functions.invoke(
+        'create-free-booking',
+        {
+          body:{
+            date:state.date,
+            time:state.time,
+            name:document.querySelector('#name').value.trim(),
+            email:document.querySelector('#email').value.trim()
+          }
+        }
+      );
+
+      if(error||!data?.ok){
+        throw error||new Error(data?.error||'No se pudo crear la reserva');
+      }
+
+      msg(
+        `✨ Reserva gratuita confirmada. Te esperamos el ${dateText(state.date)} a las ${state.time}.`
+      );
+
+      state.time='';
+      render();
+
+      await loadAvailability();
+
+    }catch(e){
+
+      console.error(e);
+      msg(e?.message||'No se pudo crear la reserva.');
+      await loadAvailability();
+
+    }finally{
+
+      freeButton.disabled=false;
+
+    }
+  }
+
+  freeButton.onclick=confirmFree;
+
+  document.addEventListener('click',function(e){
+
+    if(!e.target.closest('.price-card[data-free="true"]'))return;
+
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    state.duration=10;
+    state.price=8;
+    state.free=true;
+    state.time='';
+
+    render();
+
+    document.querySelector('#paypal-button-container').innerHTML='';
+    freeButton.hidden=false;
+
+    loadAvailability();
+
+  },true);
+
+  document.addEventListener('click',function(e){
+
+    const normal=e.target.closest('.duration-options button[data-free="true"]');
+
+    if(!normal)return;
+
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    state.duration=10;
+    state.price=8;
+    state.free=true;
+    state.time='';
+
+    render();
+
+    document.querySelector('#paypal-button-container').innerHTML='';
+    freeButton.hidden=false;
+
+    loadAvailability();
+
+  },true);
+
+})();
