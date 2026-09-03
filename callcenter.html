@@ -191,11 +191,9 @@
   };
 
   const cfg = window.TAROTEAME_CONFIG || {};
-
-  const supabase = window.supabase.createClient(
-    cfg.SUPABASE_URL,
-    cfg.SUPABASE_PUBLISHABLE_KEY
-  );
+let supabase = null;
+  
+  
 
   const nameInput = document.getElementById("name");
   const emailInput = document.getElementById("email");
@@ -260,18 +258,17 @@
 
   window.createPaymentLink = async function() {
 alert("ENTRA EN EL CLICK");
+    supabase = window.supabase.createClient(
+  cfg.SUPABASE_URL,
+  cfg.SUPABASE_PUBLISHABLE_KEY
+);
     const name = nameInput.value.trim();
     const email = emailInput.value.trim();
     const duration = Number(durationInput.value);
     const date = dateInput.value;
     const time = timeInput.value;
     const price = prices[duration];
-    const cfg = window.TAROTEAME_CONFIG || {};
-
-const supabase = window.supabase.createClient(
-  cfg.SUPABASE_URL,
-  cfg.SUPABASE_PUBLISHABLE_KEY
-);
+    
 
     if (!name) {
       showResult("Escribe el nombre del cliente.", true);
