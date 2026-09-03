@@ -259,7 +259,7 @@
 
   durationInput.addEventListener("change", updatePrice);
 
-  createBtn.addEventListener("click", async () => {
+  async function createPaymentLink() {
 alert("ENTRA EN EL CLICK");
     const name = nameInput.value.trim();
     const email = emailInput.value.trim();
