@@ -266,6 +266,12 @@ alert("ENTRA EN EL CLICK");
     const date = dateInput.value;
     const time = timeInput.value;
     const price = prices[duration];
+    const cfg = window.TAROTEAME_CONFIG || {};
+
+const supabase = window.supabase.createClient(
+  cfg.SUPABASE_URL,
+  cfg.SUPABASE_PUBLISHABLE_KEY
+);
 
     if (!name) {
       showResult("Escribe el nombre del cliente.", true);
