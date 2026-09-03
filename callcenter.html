@@ -9,9 +9,7 @@
   <script src="config.js"></script>
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -59,4 +57,309 @@
 
     label {
       display: block;
-      margin: 15
+      margin: 15px 0 6px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    .price {
+      margin-top: 18px;
+      padding: 15px;
+      border-radius: 10px;
+      background: #f0eafa;
+      text-align: center;
+      font-size: 22px;
+      font-weight: bold;
+      color: #24113f;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 18px;
+      padding: 15px;
+      border: 0;
+      border-radius: 10px;
+      background: #24113f;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: .6;
+    }
+
+    .result {
+      display: none;
+      margin-top: 18px;
+      padding: 15px;
+      border-radius: 10px;
+      background: #eaf7ee;
+      word-break: break-word;
+    }
+
+    .result a {
+      display: block;
+      margin-top: 10px;
+      color: #24113f;
+      font-weight: bold;
+    }
+
+    .error {
+      background: #fdecec;
+      color: #a00000;
+    }
+
+    .whatsapp {
+      background: #168b3b;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>📞 Taroteame</h1>
+  <p>Centro de llamadas — Crear reserva y enlace de pago</p>
+</header>
+
+<div class="container">
+
+  <div class="card">
+    <h2>Crear reserva para el cliente</h2>
+
+    <label>Nombre del cliente</label>
+    <input id="name" type="text" placeholder="Nombre completo">
+
+    <label>Email del cliente</label>
+    <input id="email" type="email" placeholder="cliente@email.com">
+
+    <label>Duración</label>
+    <select id="duration">
+      <option value="10">10 minutos — 8 €</option>
+      <option value="20">20 minutos — 15 €</option>
+      <option value="30" selected>30 minutos — 23 €</option>
+      <option value="60">60 minutos — 48 €</option>
+    </select>
+
+    <label>Fecha</label>
+    <input id="date" type="date">
+
+    <label>Hora</label>
+    <select id="time">
+      <option value="">Selecciona una hora</option>
+    </select>
+
+    <div class="price" id="price">23 €</div>
+
+    <button id="createBtn">
+      🔗 Crear enlace de pago
+    </button>
+
+    <div id="result" class="result"></div>
+  </div>
+
+</div>
+
+<script>
+  const prices = {
+    10: 8,
+    20: 15,
+    30: 23,
+    60: 48
+  };
+
+  const cfg = window.TAROTEAME_CONFIG || {};
+
+  const supabase = window.supabase.createClient(
+    cfg.SUPABASE_URL,
+    cfg.SUPABASE_PUBLISHABLE_KEY
+  );
+
+  const nameInput = document.getElementById("name");
+  const emailInput = document.getElementById("email");
+  const durationInput = document.getElementById("duration");
+  const dateInput = document.getElementById("date");
+  const timeInput = document.getElementById("time");
+  const priceBox = document.getElementById("price");
+  const createBtn = document.getElementById("createBtn");
+  const result = document.getElementById("result");
+
+  function updatePrice() {
+    const duration = Number(durationInput.value);
+    priceBox.textContent = prices[duration] + " €";
+  }
+
+  function loadTimes() {
+    timeInput.innerHTML =
+      '<option value="">Selecciona una hora</option>';
+
+    for (let hour = 17; hour <= 23; hour++) {
+      for (let minute of [0, 30]) {
+
+        if (hour === 23 && minute === 30) {
+          addTime(hour, minute);
+          continue;
+        }
+
+        if (hour < 23) {
+          addTime(hour, minute);
+        }
+      }
+    }
+  }
+
+  function addTime(hour, minute) {
+    const value =
+      String(hour).padStart(2, "0") +
+      ":" +
+      String(minute).padStart(2, "0");
+
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = value;
+    timeInput.appendChild(option);
+  }
+
+  function today() {
+    const d = new Date();
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
+  function showResult(message, error = false) {
+    result.style.display = "block";
+    result.className = "result" + (error ? " error" : "");
+    result.innerHTML = message;
+  }
+
+  durationInput.addEventListener("change", updatePrice);
+
+  createBtn.addEventListener("click", async () => {
+
+    const name = nameInput.value.trim();
+    const email = emailInput.value.trim();
+    const duration = Number(durationInput.value);
+    const date = dateInput.value;
+    const time = timeInput.value;
+    const price = prices[duration];
+
+    if (!name) {
+      showResult("Escribe el nombre del cliente.", true);
+      return;
+    }
+
+    if (!email || !email.includes("@")) {
+      showResult("Escribe un email válido.", true);
+      return;
+    }
+
+    if (!date) {
+      showResult("Selecciona una fecha.", true);
+      return;
+    }
+
+    if (!time) {
+      showResult("Selecciona una hora.", true);
+      return;
+    }
+
+    createBtn.disabled = true;
+    createBtn.textContent = "Creando enlace...";
+
+    showResult("Creando la reserva y el enlace de pago...");
+
+    try {
+
+      const { data, error } = await supabase.functions.invoke(
+        "create-payment-link",
+        {
+          body: {
+            name,
+            email,
+            duration,
+            date,
+            time,
+            price
+          }
+        }
+      );
+
+      if (error) {
+        throw new Error(error.message || "Error al crear la reserva.");
+      }
+
+      if (!data || !data.payment_url) {
+        throw new Error(
+          data?.error || "No se recibió el enlace de PayPal."
+        );
+      }
+
+      const paymentUrl = data.payment_url;
+
+      const whatsappText =
+        "Hola " + name +
+        ", aquí tienes tu enlace para pagar tu reserva de Taroteame: " +
+        paymentUrl;
+
+      const whatsappUrl =
+        "https://wa.me/?text=" +
+        encodeURIComponent(whatsappText);
+
+      showResult(`
+        <strong>✅ Reserva creada correctamente</strong><br><br>
+        Cliente: ${name}<br>
+        Fecha: ${date}<br>
+        Hora: ${time}<br>
+        Duración: ${duration} minutos<br>
+        Precio: ${price} €<br><br>
+
+        <strong>Enlace de pago:</strong>
+        <a href="${paymentUrl}" target="_blank">${paymentUrl}</a>
+
+        <button onclick="navigator.clipboard.writeText('${paymentUrl}')">
+          📋 Copiar enlace
+        </button>
+
+        <a href="${whatsappUrl}" target="_blank">
+          <button class="whatsapp">
+            📲 Enviar por WhatsApp
+          </button>
+        </a>
+      `);
+
+    } catch (err) {
+
+      console.error(err);
+
+      showResult(
+        "❌ No se pudo crear la reserva.<br><br>" +
+        (err.message || "Error desconocido."),
+        true
+      );
+
+    } finally {
+      createBtn.disabled = false;
+      createBtn.textContent = "🔗 Crear enlace de pago";
+    }
+  });
+
+  dateInput.min = today();
+  dateInput.value = today();
+
+  loadTimes();
+  updatePrice();
+</script>
+
+</body>
+</html>
