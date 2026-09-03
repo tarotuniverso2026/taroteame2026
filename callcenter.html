@@ -257,7 +257,7 @@ let supabase = null;
   durationInput.addEventListener("change", updatePrice);
 
   window.createPaymentLink = async function() {
-alert("ENTRA EN EL CLICK");
+onclick="window.createPaymentLink()"
     supabase = window.supabase.createClient(
   cfg.SUPABASE_URL,
   cfg.SUPABASE_PUBLISHABLE_KEY
