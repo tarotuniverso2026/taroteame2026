@@ -211,20 +211,51 @@ let sb = null;
     const duration = Number(durationInput.value);
     priceBox.textContent = prices[duration] + " €";
   }
+async function loadTimes() {
+  const date = dateInput.value;
+  const duration = Number(durationInput.value);
 
-  function loadTimes() {
+  timeInput.innerHTML =
+    '<option value="">Cargando horas...</option>';
+
+  try {
+    const { data, error } = await supabase.functions.invoke(
+      "availability",
+      {
+        body: {
+          date,
+          duration
+        }
+      }
+    );
+
+    if (error) throw error;
+
     timeInput.innerHTML =
       '<option value="">Selecciona una hora</option>';
 
-    for (let hour = 17; hour <= 23; hour++) {
-      for (let minute of [0, 30]) {
+    (data?.slots || []).forEach(slot => {
+      const option = document.createElement("option");
 
-        if (hour === 23 && minute === 30) {
-          addTime(hour, minute);
-          continue;
-        }
+      option.value = slot.time;
+      option.textContent = slot.available
+        ? slot.time
+        : slot.time + " — OCUPADA";
 
-        if (hour < 23) {
+      option.disabled = !slot.available;
+
+      timeInput.appendChild(option);
+    });
+
+  } catch (err) {
+    console.error(err);
+
+    timeInput.innerHTML =
+      '<option value="">No se pudieron cargar las horas</option>';
+  }
+}
+
+        
           addTime(hour, minute);
         }
       }
@@ -375,7 +406,8 @@ window.createPaymentLink = async function() {
 
   dateInput.min = today();
   dateInput.value = today();
-
+dateInput.addEventListener("change", loadTimes);
+durationInput.addEventListener("change", loadTimes);
   loadTimes();
   updatePrice();
 </script>
