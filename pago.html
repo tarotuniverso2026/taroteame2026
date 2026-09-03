@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taroteame — Confirmando pago</title>
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f7f3ff;
+      font-family: Arial, sans-serif;
+      color: #222;
+    }
+
+    .box {
+      width: calc(100% - 40px);
+      max-width: 520px;
+      background: #fff;
+      padding: 35px 25px;
+      border-radius: 18px;
+      text-align: center;
+      box-shadow: 0 8px 30px rgba(0,0,0,.12);
+    }
+
+    .icon {
+      font-size: 60px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      color: #5b2c83;
+    }
+
+    #mensaje {
+      font-size: 17px;
+      line-height: 1.5;
+    }
+
+    .error {
+      color: #b00020;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 13px 22px;
+      border-radius: 10px;
+      background: #5b2c83;
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+
+  <div class="icon" id="icono">⏳</div>
+
+  <h1 id="titulo">Confirmando tu pago...</h1>
+
+  <div id="mensaje">
+    Estamos comprobando tu pago y confirmando tu reserva.
+    <br>
+    Por favor, espera unos segundos.
+  </div>
+
+  <a class="btn" href="index.html">
+    Volver a Taroteame
+  </a>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+
+<script>
+  const cfg = window.TAROTEAME_CONFIG || {};
+
+  const supabaseClient = window.supabase.createClient(
+    cfg.SUPABASE_URL,
+    cfg.SUPABASE_PUBLISHABLE_KEY
+  );
+
+  async function confirmarPago() {
+
+    const params = new URLSearchParams(
+      window.location.search
+    );
+
+    const orderID =
+      params.get("token") ||
+      params.get("orderID") ||
+      params.get("orderId");
+
+    if (!orderID) {
+      throw new Error(
+        "No se encontró el pedido de PayPal."
+      );
+    }
+
+    const { data, error } =
+      await supabaseClient.functions.invoke(
+        "capture-order",
+        {
+          body: {
+            orderID: orderID
+          }
+        }
+      );
+
+    if (error) {
+      throw new Error(
+        error.message ||
+        "No se pudo confirmar el pago."
+      );
+    }
+
+    if (!data || data.ok !== true) {
+      throw new Error(
+        data?.error ||
+        "No se pudo confirmar el pago."
+      );
+    }
+
+    document.getElementById("icono").textContent = "✅";
+
+    document.getElementById("titulo").textContent =
+      "¡Reserva confirmada!";
+
+    document.getElementById("mensaje").innerHTML =
+      "Tu pago se ha realizado correctamente." +
+      "<br><br>" +
+      "Tu reserva en <b>Taroteame</b> ha quedado confirmada." +
+      "<br>" +
+      "Hemos enviado el correo de confirmación.";
+
+    console.log("Reserva confirmada:", data);
+  }
+
+  confirmarPago().catch(function(error) {
+
+    console.error(error);
+
+    document.getElementById("icono").textContent = "❌";
+
+    document.getElementById("titulo").textContent =
+      "No se pudo confirmar el pago";
+
+    document.getElementById("mensaje").innerHTML =
+      '<span class="error">' +
+      (error.message ||
+       "Ha ocurrido un error.") +
+      "</span>" +
+      "<br><br>" +
+      "No vuelvas a realizar el pago. " +
+      "Si el importe ha sido cobrado, " +
+      "contacta con Taroteame.";
+  });
+</script>
+
+</body>
+</html>
