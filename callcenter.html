@@ -173,7 +173,7 @@
     </select>
 
     <div class="price" id="price">23 €</div>
-<button id="createBtn" type="button" onclick="alert('BOTON FUNCIONA')"
+<button id="createBtn" type="button" onclick="window.createPaymentLink && window.createPaymentLink()"
   🔗 Crear enlace de pago
 </button>
 
@@ -183,7 +183,7 @@
 </div>
 
 <script>
-  document.body.insertAdjacentHTML('afterbegin','<div style="background:red;color:white;padding:20px;font-size:20px">SCRIPT OK</div>');
+   
   const prices = {
     10: 8,
     20: 15,
