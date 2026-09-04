@@ -194,7 +194,7 @@
 
 const cfg = window.TAROTEAME_CONFIG || {};
 let supabase = null;
-  
+  window.supabaseReady = typeof window.supabase !== "undefined";
   
 
   const nameInput = document.getElementById("name");
