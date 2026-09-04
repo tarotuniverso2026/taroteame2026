@@ -286,10 +286,7 @@ async function loadTimes() {
 
 window.createPaymentLink = async function() {
   
-    supabase = window.supabase.createClient(
-  cfg.SUPABASE_URL,
-  cfg.SUPABASE_PUBLISHABLE_KEY
-);
+
     const name = nameInput.value.trim();
     const email = emailInput.value.trim();
     const duration = Number(durationInput.value);
