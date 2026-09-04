@@ -42,7 +42,19 @@
   <h1>👥 Cartera de clientes</h1>
   <button class="secondary" onclick="salir()">Cerrar sesión</button>
 </div>
+<div class="card">
+  <h2>👥 Clientes</h2>
 
+  <input
+    id="buscarCliente"
+    type="text"
+    placeholder="🔎 Buscar cliente..."
+  >
+
+  <div id="clientes">
+    <p>Cargando clientes...</p>
+  </div>
+</div>
 <div id="lista" class="card">
 
   <h2>📅 Gestión de reservas</h2>
@@ -138,13 +150,46 @@ async function cargarClientes(){
 
   clientes = data || [];
 
-  cargarReservasAdmin();
+  mostrarClientes();
+cargarReservasAdmin();}
+
+function mostrarClientes(){
+
+  const cont = document.getElementById("clientes");
+  const texto = document.getElementById("buscarCliente").value.toLowerCase().trim();
+
+  const filtrados = clientes.filter(c => {
+    const nombre = c.name || "";
+    const email = c.email || "";
+    const telefono = c.phone || "";
+
+    return !texto ||
+      nombre.toLowerCase().includes(texto) ||
+      email.toLowerCase().includes(texto) ||
+      telefono.toLowerCase().includes(texto);
+  });
+
+  if(!filtrados.length){
+    cont.innerHTML = "<p>No hay clientes que coincidan.</p>";
+    return;
+  }
+
+  cont.innerHTML = filtrados.map(c => `
+    <div class="client" onclick="verCliente('${c.id}')">
+      <strong>👤 ${escapeHtml(c.name || "Sin nombre")}</strong><br>
+      📧 ${escapeHtml(c.email || "")}<br>
+      📞 ${escapeHtml(c.phone || "Sin teléfono")}
+    </div>
+  `).join("");
 }
+
+document
+  .getElementById("buscarCliente")
+  .addEventListener("input", mostrarClientes);
 
 let reservasAdmin = [];
 
 async function cargarReservasAdmin(){
-
   const { data, error } = await supabaseClient
     .from("bookings")
     .select("*")
