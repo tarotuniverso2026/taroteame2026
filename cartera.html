@@ -215,7 +215,7 @@ function mostrarReservasAdmin(){
 
       const pago =
         r.payment_status === "paid" ? "💳 Pagado" :
-        r.payment_status === "free" ? "🎁 Gratis" :
+        r.payment_status === "free" ? " 🎁Gratis" :
         "⏳ Pendiente";
 
       return `
@@ -228,7 +228,7 @@ function mostrarReservasAdmin(){
           🕐 ${hora(r.start_minute)}<br>
           ⏱️ ${r.duration_min || 0} minutos<br>
           ${estadoTexto} · ${pago}<br>
-          💶 ${precio(r.duration_min)} €
+💶 ${r.payment_status === "free" ? "Gratis" : precio(r.duration_min) + " €"}
 
           ${
             r.status !== "cancelled"
