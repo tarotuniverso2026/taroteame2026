@@ -411,7 +411,10 @@ if (!data || !data.payment_url) {
   dateInput.min = today();
   dateInput.value = today();
 dateInput.addEventListener("change", loadTimes);
-durationInput.addEventListener("change", loadTimes);
+durationInput.addEventListener("change", () => {
+  updatePrice();
+  loadTimes();
+});
   loadTimes();
   updatePrice();
 </script>
