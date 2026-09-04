@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Taroteame — Cartera de clientes</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <style>
+    body{font-family:Arial,sans-serif;background:#f5f2f8;margin:0;color:#241b2f}
+    .wrap{max-width:900px;margin:auto;padding:20px}
+    .card{background:white;border-radius:16px;padding:20px;margin-bottom:18px;box-shadow:0 3px 14px #0001}
+    h1{margin-top:0}
+    input,textarea,button{width:100%;box-sizing:border-box;padding:12px;margin:7px 0;border-radius:10px;border:1px solid #ccc;font-size:16px}
+    button{background:#5d3578;color:white;border:0;font-weight:bold}
+    button.secondary{background:#777}
+    .client{padding:14px;border:1px solid #ddd;border-radius:12px;margin:10px 0;cursor:pointer}
+    .client:hover{background:#faf7fc}
+    .hidden{display:none}
+    .stat{display:inline-block;background:#f0e8f5;border-radius:12px;padding:12px;margin:4px}
+    .booking{border-left:4px solid #6b4388;padding:10px;margin:10px 0;background:#fafafa}
+    .error{color:#b00020}
+    .ok{color:#247524}
+  </style>
+</head>
+
+<body>
+<div class="wrap">
+
+  <div id="login" class="card">
+    <h1>🔐 Cartera de clientes</h1>
+    <p>Acceso privado de Taroteame</p>
+    <input id="email" type="email" placeholder="Correo electrónico">
+    <input id="password" type="password" placeholder="Contraseña">
+    <button onclick="entrar()">Entrar</button>
+    <div id="loginMsg"></div>
+  </div>
+
+  <div id="app" class="hidden">
+
+    <div class="card">
+      <h1>👥 Cartera de clientes</h1>
+      <button class="secondary" onclick="salir()">Cerrar sesión</button>
+      <input id="buscar" placeholder="Buscar por nombre, teléfono o email..." oninput="buscarClientes()">
+    </div>
+
+    <div id="lista" class="card">
+      <p>Cargando clientes...</p>
+    </div>
+
+    <div id="detalle" class="card hidden"></div>
+
+  </div>
+</div>
+
+<script>
+const cfg = window.TAROTEAME_CONFIG || {};
+
+const supabaseClient = window.supabase.createClient(
+  cfg.SUPABASE_URL,
+  cfg.SUPABASE_PUBLISHABLE_KEY
+);
+
+let clientes = [];
+
+async function comprobarSesion(){
+  const { data } = await supabaseClient.auth.getSession();
+
+  if(data.session){
+    document.getElementById("login").classList.add("hidden");
+    document.getElementById("app").classList.remove("hidden");
+    cargarClientes();
+  }
+}
+
+async function entrar(){
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  const msg = document.getElementById("loginMsg");
+  msg.className = "";
+  msg.textContent = "Entrando...";
+
+  const { data, error } =
+    await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+
+  if(error){
+    msg.className = "error";
+    msg.textContent = "Error: " + error.message;
+    return;
+  }
+
+  document.getElementById("login").classList.add("hidden");
+  document.getElementById("app").classList.remove("hidden");
+
+  cargarClientes();
+}
+
+async function salir(){
+  await supabaseClient.auth.signOut();
+  location.reload();
+}
+
+async function cargarClientes(){
+  const { data, error } = await supabaseClient
+    .from("customers")
+    .select("*")
+    .order("name", { ascending:true });
+
+  if(error){
+    document.getElementById("lista").innerHTML =
+      '<p class="error">No se pudieron cargar los clientes: ' +
+      error.message + '</p>';
+    return;
+  }
+
+  clientes = data || [];
+  mostrarClientes(clientes);
+}
+
+function buscarClientes(){
+  const texto = document.getElementById("buscar").value
+    .toLowerCase()
+    .trim();
+
+  if(!texto){
+    mostrarClientes(clientes);
+    return;
+  }
+
+  const filtrados = clientes.filter(c =>
+    (c.name || "").toLowerCase().includes(texto) ||
+    (c.phone || "").toLowerCase().includes(texto) ||
+    (c.email || "").toLowerCase().includes(texto)
+  );
+
+  mostrarClientes(filtrados);
+}
+
+function mostrarClientes(lista){
+  const cont = document.getElementById("lista");
+
+  if(!lista.length){
+    cont.innerHTML = "<p>No hay clientes.</p>";
+    return;
+  }
+
+  cont.innerHTML =
+    "<h2>Clientes (" + lista.length + ")</h2>" +
+    lista.map(c => `
+      <div class="client" onclick="verCliente('${c.id}')">
+        <strong>${escapeHtml(c.name || "Sin nombre")}</strong><br>
+        ${escapeHtml(c.email || "")}<br>
+        ${escapeHtml(c.phone || "")}
+      </div>
+    `).join("");
+}
+
+async function verCliente(id){
+  const cliente = clientes.find(c => c.id === id);
+  if(!cliente) return;
+
+  const detalle = document.getElementById("detalle");
+  detalle.classList.remove("hidden");
+
+  detalle.innerHTML = `
+    <h2>${escapeHtml(cliente.name || "Cliente")}</h2>
+
+    <div class="stat">📧 ${escapeHtml(cliente.email || "Sin email")}</div>
+    <div class="stat">📞 ${escapeHtml(cliente.phone || "Sin teléfono")}</div>
+
+    <h3>📝 Notas</h3>
+    <textarea id="notas">${escapeHtml(cliente.notes || "")}</textarea>
+    <button onclick="guardarNotas('${cliente.id}')">Guardar notas</button>
+
+    <h3>📅 Historial de reservas</h3>
+    <div id="historial">Cargando...</div>
+  `;
+
+  const { data, error } = await supabaseClient
+    .from("bookings")
+    .select("*")
+    .eq("customer_id", id)
+    .order("appointment_date", { ascending:false });
+
+  if(error){
+    document.getElementById("historial").innerHTML =
+      '<p class="error">No se pudo cargar el historial: ' +
+      error.message + '</p>';
+    return;
+  }
+
+  const reservas = data || [];
+
+  const total = reservas
+    .filter(r => r.payment_status === "paid")
+    .reduce((sum,r) => sum + precio(r.duration_min), 0);
+
+  document.getElementById("historial").innerHTML = `
+    <div class="stat">🎯 Sesiones: ${reservas.length}</div>
+    <div class="stat">💶 Total gastado: €${total.toFixed(2)}</div>
+    ${reservas.length
+      ? reservas.map(r => `
+        <div class="booking">
+          <strong>${escapeHtml(r.appointment_date || "")}</strong><br>
+          Hora: ${hora(r.start_minute)}<br>
+          Duración: ${r.duration_min || 0} min<br>
+          Estado: ${escapeHtml(r.status || "")}<br>
+          Pago: ${escapeHtml(r.payment_status || "")}
+        </div>
+      `).join("")
+      : "<p>Este cliente todavía no tiene reservas.</p>"
+    }
+  `;
+
+  detalle.scrollIntoView({behavior:"smooth"});
+}
+
+async function guardarNotas(id){
+  const notas = document.getElementById("notas").value;
+
+  const { error } = await supabaseClient
+    .from("customers")
+    .update({
+      notes: notas,
+      updated_at: new Date().toISOString()
+    })
+    .eq("id", id);
+
+  if(error){
+    alert("No se pudieron guardar las notas.");
+    return;
+  }
+
+  const cliente = clientes.find(c => c.id === id);
+  if(cliente) cliente.notes = notas;
+
+  alert("Notas guardadas.");
+}
+
+function precio(min){
+  if(min === 10) return 8;
+  if(min === 20) return 15;
+  if(min === 30) return 23;
+  if(min === 60) return 48;
+  return 0;
+}
+
+function hora(min){
+  if(min == null) return "";
+  const h = Math.floor(min / 60);
+  const m = min % 60;
+  return String(h).padStart(2,"0") + ":" +
+         String(m).padStart(2,"0");
+}
+
+function escapeHtml(value){
+  return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+comprobarSesion();
+</script>
+
+</body>
+</html>
