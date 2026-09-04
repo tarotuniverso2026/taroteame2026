@@ -175,11 +175,11 @@ function mostrarClientes(){
   }
 
   cont.innerHTML = filtrados.map(c => `
-    <div class="client" onclick="verCliente('${c.id}')">
+    <button type="button" class="client" onclick="verCliente('${c.id}')">
       <strong>👤 ${escapeHtml(c.name || "Sin nombre")}</strong><br>
       📧 ${escapeHtml(c.email || "")}<br>
       📞 ${escapeHtml(c.phone || "Sin teléfono")}
-    </div>
+    </button>
   `).join("");
 }
 
