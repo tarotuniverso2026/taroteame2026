@@ -39,14 +39,32 @@
   <div id="app" class="hidden">
 
     <div class="card">
-      <h1>👥 Cartera de clientes</h1>
-      <button class="secondary" onclick="salir()">Cerrar sesión</button>
-      <input id="buscar" placeholder="Buscar por nombre, teléfono o email..." oninput="buscarClientes()">
-    </div>
+  <h1>👥 Cartera de clientes</h1>
+  <button class="secondary" onclick="salir()">Cerrar sesión</button>
+</div>
 
-    <div id="lista" class="card">
-      <p>Cargando clientes...</p>
-    </div>
+<div id="lista" class="card">
+
+  <h2>📅 Gestión de reservas</h2>
+
+  <input
+    id="buscarReserva"
+    type="text"
+    placeholder="🔎 Buscar reserva por cliente, email o teléfono..."
+  >
+
+  <select id="filtroEstado">
+    <option value="">Todas las reservas</option>
+    <option value="confirmed">🟢 Confirmadas</option>
+    <option value="pending">🟡 Pendientes</option>
+    <option value="cancelled">🔴 Canceladas</option>
+  </select>
+
+  <div id="reservasAdmin">
+    <p>Cargando reservas...</p>
+  </div>
+
+</div>
 
     <div id="detalle" class="card hidden"></div>
 
@@ -112,7 +130,7 @@ async function cargarClientes(){
     .order("name", { ascending:true });
 
   if(error){
-    document.getElementById("lista").innerHTML =
+    document.getElementById("reservasAdmin").innerHTML =
       '<p class="error">No se pudieron cargar los clientes: ' +
       escapeHtml(error.message) + '</p>';
     return;
@@ -134,7 +152,7 @@ async function cargarReservasAdmin(){
     .order("start_minute", { ascending:false });
 
   if(error){
-    document.getElementById("lista").innerHTML =
+    document.getElementById("reservasAdmin").innerHTML =
       '<p class="error">No se pudieron cargar las reservas: ' +
       escapeHtml(error.message) + '</p>';
     return;
@@ -147,7 +165,7 @@ async function cargarReservasAdmin(){
 
 function mostrarReservasAdmin(){
 
-  const cont = document.getElementById("lista");
+  const cont = document.getElementById("reservasAdmin");
 
   const texto = document.getElementById("buscarReserva")
     .value.toLowerCase().trim();
@@ -257,7 +275,7 @@ document
   .getElementById("filtroEstado")
   .addEventListener("change", mostrarReservasAdmin); 
 
-
+async function verCliente(id){
   const cliente = clientes.find(c => c.id === id);
   if(!cliente) return;
 
