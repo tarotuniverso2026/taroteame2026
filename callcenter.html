@@ -223,7 +223,7 @@ async function loadTimes() {
     '<option value="">Cargando horas...</option>';
 
   try {
-    const { data, error } = await supabase.functions.invoke(
+    const { data, error } = await db.functions.invoke(
       "availability",
       {
         body: {
