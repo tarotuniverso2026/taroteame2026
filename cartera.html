@@ -200,7 +200,7 @@ async function verCliente(id){
     .reduce((sum,r) => sum + precio(r.duration_min), 0);
 
   document.getElementById("historial").innerHTML = `
-    <div class="stat">🎯 Sesiones: ${reservas.length}</div>
+<div class="stat">🎯 Sesiones: ${reservas.filter(r => r.payment_status === "paid").length}</div>
     <div class="stat">💶 Total gastado: €${total.toFixed(2)}</div>
     ${reservas.length
       ? reservas.map(r => `
