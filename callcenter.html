@@ -344,8 +344,7 @@ window.createPaymentLink = async function() {
       if (error) {
         throw new Error(error.message || "Error al crear la reserva.");
       }
-
-      if (!data || !data.payment_url) {
+if (!data || !data.payment_url) {
         throw new Error(
           data?.error || "No se recibió el enlace de PayPal."
         );
