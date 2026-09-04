@@ -231,7 +231,7 @@ function mostrarReservasAdmin(){
 💶 ${r.payment_status === "free" ? "Gratis" : precio(r.duration_min) + " €"}
 
           ${
-            r.status !== "cancelled"
+            r.status !== "cancelled" && r.status !== "expired"
             ? `<button onclick="cancelarReserva('${r.id}')">
                  ❌ Cancelar reserva
                </button>`
