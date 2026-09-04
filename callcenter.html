@@ -192,8 +192,11 @@
     60: 48
   };
 
-  const cfg = window.TAROTEAME_CONFIG || {};
-let supabase = null; 
+const cfg = window.TAROTEAME_CONFIG || {};
+let supabase = window.supabase.createClient(
+  cfg.SUPABASE_URL,
+  cfg.SUPABASE_PUBLISHABLE_KEY
+);
 
   
   
