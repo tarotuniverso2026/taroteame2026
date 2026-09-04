@@ -204,6 +204,8 @@ const db = window.supabase?.createClient(
 
   const nameInput = document.getElementById("name");
   const emailInput = document.getElementById("email");
+  const phoneInput = document.getElementById("phone");
+const notesInput = document.getElementById("notes");
   const durationInput = document.getElementById("duration");
   const dateInput = document.getElementById("date");
   const timeInput = document.getElementById("time");
@@ -333,6 +335,8 @@ window.createPaymentLink = async function() {
           body: {
             name,
             email,
+            phone: phoneInput.value.trim(),
+notes: notesInput.value.trim(),
             duration,
             date,
             time,
