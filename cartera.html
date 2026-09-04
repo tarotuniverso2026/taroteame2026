@@ -105,6 +105,7 @@ async function salir(){
 }
 
 async function cargarClientes(){
+
   const { data, error } = await supabaseClient
     .from("customers")
     .select("*")
@@ -113,53 +114,150 @@ async function cargarClientes(){
   if(error){
     document.getElementById("lista").innerHTML =
       '<p class="error">No se pudieron cargar los clientes: ' +
-      error.message + '</p>';
+      escapeHtml(error.message) + '</p>';
     return;
   }
 
   clientes = data || [];
-  mostrarClientes(clientes);
+
+  cargarReservasAdmin();
 }
 
-function buscarClientes(){
-  const texto = document.getElementById("buscar").value
-    .toLowerCase()
-    .trim();
+let reservasAdmin = [];
 
-  if(!texto){
-    mostrarClientes(clientes);
+async function cargarReservasAdmin(){
+
+  const { data, error } = await supabaseClient
+    .from("bookings")
+    .select("*")
+    .order("appointment_date", { ascending:false })
+    .order("start_minute", { ascending:false });
+
+  if(error){
+    document.getElementById("lista").innerHTML =
+      '<p class="error">No se pudieron cargar las reservas: ' +
+      escapeHtml(error.message) + '</p>';
     return;
   }
 
-  const filtrados = clientes.filter(c =>
-    (c.name || "").toLowerCase().includes(texto) ||
-    (c.phone || "").toLowerCase().includes(texto) ||
-    (c.email || "").toLowerCase().includes(texto)
-  );
+  reservasAdmin = data || [];
 
-  mostrarClientes(filtrados);
+  mostrarReservasAdmin();
 }
 
-function mostrarClientes(lista){
+function mostrarReservasAdmin(){
+
   const cont = document.getElementById("lista");
 
-  if(!lista.length){
-    cont.innerHTML = "<p>No hay clientes.</p>";
+  const texto = document.getElementById("buscarReserva")
+    .value.toLowerCase().trim();
+
+  const estado = document.getElementById("filtroEstado").value;
+
+  const filtradas = reservasAdmin.filter(r => {
+
+    const cliente = clientes.find(c => c.id === r.customer_id);
+
+    const nombre = cliente?.name || r.customer_name || "";
+    const email = cliente?.email || r.customer_email || "";
+    const telefono = cliente?.phone || "";
+
+    const coincideTexto =
+      !texto ||
+      nombre.toLowerCase().includes(texto) ||
+      email.toLowerCase().includes(texto) ||
+      telefono.toLowerCase().includes(texto);
+
+    const coincideEstado =
+      !estado || r.status === estado;
+
+    return coincideTexto && coincideEstado;
+  });
+
+  if(!filtradas.length){
+    cont.innerHTML = "<p>No hay reservas que coincidan.</p>";
     return;
   }
 
   cont.innerHTML =
-    "<h2>Clientes (" + lista.length + ")</h2>" +
-    lista.map(c => `
-      <div class="client" onclick="verCliente('${c.id}')">
-        <strong>${escapeHtml(c.name || "Sin nombre")}</strong><br>
-        ${escapeHtml(c.email || "")}<br>
-        ${escapeHtml(c.phone || "")}
-      </div>
-    `).join("");
+    "<h2>📅 Reservas (" + filtradas.length + ")</h2>" +
+    filtradas.map(r => {
+
+      const cliente = clientes.find(c => c.id === r.customer_id);
+
+      const nombre = cliente?.name || r.customer_name || "Sin nombre";
+      const email = cliente?.email || r.customer_email || "";
+      const telefono = cliente?.phone || "";
+
+      let estadoTexto = r.status || "Sin estado";
+
+      if(r.status === "confirmed") estadoTexto = "🟢 Confirmada";
+      if(r.status === "pending") estadoTexto = "🟡 Pendiente";
+      if(r.status === "cancelled") estadoTexto = "🔴 Cancelada";
+
+      const pago =
+        r.payment_status === "paid" ? "💳 Pagado" :
+        r.payment_status === "free" ? "🎁 Gratis" :
+        "⏳ Pendiente";
+
+      return `
+        <div class="booking">
+
+          <strong>👤 ${escapeHtml(nombre)}</strong><br>
+          📧 ${escapeHtml(email)}<br>
+          📞 ${escapeHtml(telefono || "Sin teléfono")}<br>
+          📅 ${escapeHtml(r.appointment_date || "")}<br>
+          🕐 ${hora(r.start_minute)}<br>
+          ⏱️ ${r.duration_min || 0} minutos<br>
+          ${estadoTexto} · ${pago}<br>
+          💶 ${precio(r.duration_min)} €
+
+          ${
+            r.status !== "cancelled"
+            ? `<button onclick="cancelarReserva('${r.id}')">
+                 ❌ Cancelar reserva
+               </button>`
+            : ""
+          }
+
+        </div>
+      `;
+    }).join("");
 }
 
-async function verCliente(id){
+async function cancelarReserva(id){
+
+  if(!confirm("¿Seguro que quieres cancelar esta reserva?")){
+    return;
+  }
+
+  const { error } = await supabaseClient
+    .from("bookings")
+    .update({
+      status: "cancelled",
+      updated_at: new Date().toISOString()
+    })
+    .eq("id", id);
+
+  if(error){
+    alert("No se pudo cancelar la reserva: " + error.message);
+    return;
+  }
+
+  alert("Reserva cancelada correctamente.");
+
+  cargarReservasAdmin();
+}
+
+document
+  .getElementById("buscarReserva")
+  .addEventListener("input", mostrarReservasAdmin);
+
+document
+  .getElementById("filtroEstado")
+  .addEventListener("change", mostrarReservasAdmin); 
+
+
   const cliente = clientes.find(c => c.id === id);
   if(!cliente) return;
 
