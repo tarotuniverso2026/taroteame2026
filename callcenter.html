@@ -255,7 +255,7 @@ async function loadTimes() {
     console.error(err);
 
     timeInput.innerHTML =
-      '<option value="">No se pudieron cargar las horas</option>';
+      '<option value="">ERROR: ' + (err.message || err) + '</option>';
   }
 }
 
