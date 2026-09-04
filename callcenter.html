@@ -327,7 +327,7 @@ window.createPaymentLink = async function() {
 
     try {
 
-      const { data, error } = await supabase.functions.invoke(
+      const { data, error } = await db.functions.invoke(
         "create-payment-link",
         {
           body: {
