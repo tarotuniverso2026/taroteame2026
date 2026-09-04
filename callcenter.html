@@ -194,7 +194,7 @@
   };
 
 const cfg = window.TAROTEAME_CONFIG || {};
-let supabase = window.supabase?.createClient(
+const db = window.supabase?.createClient(
   cfg.SUPABASE_URL,
   cfg.SUPABASE_PUBLISHABLE_KEY
 );
