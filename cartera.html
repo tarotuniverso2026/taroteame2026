@@ -373,13 +373,23 @@ async function verCliente(id){
 
   const reservas = data || [];
 
-  const total = reservas
-    .filter(r => r.payment_status === "paid")
-    .reduce((sum,r) => sum + precio(r.duration_min), 0);
+  const pagadas = reservas.filter(r => r.payment_status === "paid");
+
+const total = pagadas
+  .reduce((sum,r) => sum + precio(r.duration_min), 0);
+
+const minutosTotales = pagadas
+  .reduce((sum,r) => sum + (r.duration_min || 0), 0);
+
+const ultimaSesion = pagadas.length
+  ? pagadas[0].appointment_date
+  : "Sin sesiones pagadas";
 
   document.getElementById("historial").innerHTML = `
-<div class="stat">🎯 Sesiones: ${reservas.filter(r => r.payment_status === "paid").length}</div>
-    <div class="stat">💶 Total gastado: €${total.toFixed(2)}</div>
+<div class="stat">🎯 Sesiones pagadas: ${pagadas.length}</div>
+<div class="stat">💶 Total gastado: €${total.toFixed(2)}</div>
+<div class="stat">⏱️ Tiempo contratado: ${minutosTotales} min</div>
+<div class="stat">📅 Última sesión pagada: ${ultimaSesion}</div>
     ${reservas.length
       ? reservas.map(r => `
         <div class="booking">
