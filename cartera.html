@@ -391,18 +391,46 @@ const ultimaSesion = pagadas.length
 <div class="stat">⏱️ Tiempo contratado: ${minutosTotales} min</div>
 <div class="stat">📅 Última sesión pagada: ${ultimaSesion}</div>
     ${reservas.length
-      ? reservas.map(r => `
+  ? reservas.map(r => {
+
+      let estado = r.status || "Sin estado";
+
+      if(r.status === "confirmed") estado = "🟢 Confirmada";
+      if(r.status === "pending") estado = "🟡 Pendiente";
+      if(r.status === "cancelled") estado = "🔴 Cancelada";
+      if(r.status === "expired") estado = "⏳ Expirada";
+
+      let pago = r.payment_status || "Sin pago";
+
+      if(r.payment_status === "paid") pago = "💳 Pagado";
+      if(r.payment_status === "free") pago = "🎁 Gratis";
+      if(r.payment_status === "failed") pago = "❌ Fallido";
+      if(r.payment_status === "pending") pago = "⏳ Pendiente";
+
+      return `
         <div class="booking">
+
           <strong>${escapeHtml(r.appointment_date || "")}</strong><br>
+
           Hora: ${hora(r.start_minute)}<br>
+
           Duración: ${r.duration_min || 0} min<br>
-          Estado: ${escapeHtml(r.status || "")}<br>
-          Pago: ${escapeHtml(r.payment_status || "")}
+
+          Estado: ${estado}<br>
+
+          Pago: ${pago}<br>
+
+          💶 ${
+            r.payment_status === "free"
+              ? "Gratis"
+              : precio(r.duration_min) + " €"
+          }
+
         </div>
-      `).join("")
-      : "<p>Este cliente todavía no tiene reservas.</p>"
-    }
-  `;
+      `;
+}).join("")
+: "<p>Este cliente todavía no tiene reservas.</p>"
+`;
 
   detalle.scrollIntoView({behavior:"smooth"});
 }
