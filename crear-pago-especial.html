@@ -130,12 +130,11 @@ throw new Error(
 );
 
 const body={
-name:name.value.trim(),
-email:email.value.trim(),
-amount:Number(amount.value),
-concept:concept.value.trim()
+name:document.getElementById("name").value.trim(),
+email:document.getElementById("email").value.trim(),
+amount:Number(document.getElementById("amount").value),
+concept:document.getElementById("concept").value.trim()
 };
-
 const {data,error}=
 await supabaseClient.functions.invoke(
 "create-special-payment",
