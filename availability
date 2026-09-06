@@ -52,22 +52,40 @@ Deno.serve(async (req) => {
     }
 
     const slots = [];
-    const max = 1410 - duration;
 
-    for (let minute = 1020; minute <= max; minute += 30) {
-      const end = minute + duration;
+const day = new Date(date + "T12:00:00").getDay();
+
+// Lunes cerrado
+if (day !== 1) {
+
+  const ranges = [
+    [480, 900],
+    [1020, 1410]
+  ];
+
+  for (const [start, end] of ranges) {
+
+    const max = end - duration;
+
+    for (let minute = start; minute <= max; minute += 30) {
+
+      const endMinute = minute + duration;
 
       const overlap = (busy || []).some((booking: any) => {
         return (
           minute < booking.start_minute + booking.duration_min &&
-          end > booking.start_minute
+          endMinute > booking.start_minute
         );
       });
 
       slots.push({
         time: `${pad(Math.floor(minute / 60))}:${pad(minute % 60)}`,
-        available: !overlap,
+        available: !overlap
       });
+    }
+  }
+}
+      
     }
 
     return new Response(
