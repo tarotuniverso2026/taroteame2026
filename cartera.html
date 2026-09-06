@@ -86,10 +86,32 @@
 <script>
 const cfg = window.TAROTEAME_CONFIG || {};
 
-const supabaseClient = window.supabase.createClient(
-  cfg.SUPABASE_URL,
-  cfg.SUPABASE_PUBLISHABLE_KEY
-);
+let supabaseClient;
+
+try {
+  if (!window.supabase) {
+    throw new Error("No se ha cargado Supabase");
+  }
+
+  if (!cfg.SUPABASE_URL || !cfg.SUPABASE_PUBLISHABLE_KEY) {
+    throw new Error("Falta la configuración de Supabase");
+  }
+
+  supabaseClient = window.supabase.createClient(
+    cfg.SUPABASE_URL,
+    cfg.SUPABASE_PUBLISHABLE_KEY
+  );
+
+} catch (error) {
+  const msg = document.getElementById("loginMsg");
+
+  if (msg) {
+    msg.className = "error";
+    msg.textContent = "Error de carga: " + error.message;
+  }
+
+  console.error(error);
+}
 
 let clientes = [];
 
