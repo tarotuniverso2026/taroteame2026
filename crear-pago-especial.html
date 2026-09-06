@@ -10,29 +10,29 @@
 
 <style>
 body{
-  font-family:Arial;
+  font-family:Arial,sans-serif;
   background:#f5f2f8;
   color:#241b2f;
   margin:0;
-  padding:20px
+  padding:20px;
 }
 .wrap{
   max-width:560px;
-  margin:auto
+  margin:auto;
 }
 .card{
   background:#fff;
   border-radius:18px;
   padding:24px;
-  box-shadow:0 3px 14px #0001
+  box-shadow:0 3px 14px #0001;
 }
 h1{
-  color:#60377b
+  color:#60377b;
 }
 label{
   display:block;
   font-weight:bold;
-  margin:14px 0 6px
+  margin:14px 0 6px;
 }
 input,textarea{
   width:100%;
@@ -40,7 +40,7 @@ input,textarea{
   padding:13px;
   border:1px solid #ccc;
   border-radius:10px;
-  font-size:16px
+  font-size:16px;
 }
 button{
   width:100%;
@@ -51,20 +51,30 @@ button{
   color:#fff;
   font-size:18px;
   font-weight:bold;
-  margin-top:18px
+  margin-top:18px;
+  cursor:pointer;
+}
+button:disabled{
+  opacity:.6;
 }
 .error{
-  color:#b00020
+  color:#b00020;
+  margin-top:15px;
 }
 .ok{
-  color:#246b35
+  color:#246b35;
+  margin-top:15px;
 }
 .result{
   background:#f3e8f7;
   border-radius:12px;
   padding:16px;
   margin-top:18px;
-  word-break:break-all
+  word-break:break-word;
+}
+.result a{
+  color:#60377b;
+  font-weight:bold;
 }
 </style>
 </head>
@@ -78,19 +88,19 @@ button{
 
 <p>Introduce el importe y concepto que quieras cobrar.</p>
 
-<label>Nombre del cliente</label>
-<input id="name" placeholder="Nombre y apellidos">
+<label for="name">Nombre del cliente</label>
+<input id="name" type="text" placeholder="Nombre y apellidos">
 
-<label>Email del cliente</label>
+<label for="email">Email del cliente</label>
 <input id="email" type="email" placeholder="cliente@email.com">
 
-<label>Importe (€)</label>
+<label for="amount">Importe (€)</label>
 <input id="amount" type="number" min="0.01" step="0.01" placeholder="12.00">
 
-<label>Concepto</label>
+<label for="concept">Concepto</label>
 <textarea id="concept" rows="3" placeholder="Lectura especial"></textarea>
 
-<button id="btn" onclick="crearPago()">
+<button id="btn" type="button" onclick="crearPago()">
 🟣 Crear enlace de pago
 </button>
 
@@ -101,70 +111,176 @@ button{
 
 <script>
 
-const cfg=window.TAROTEAME_CONFIG||{};
+const cfg = window.TAROTEAME_CONFIG || {};
 
-const supabaseClient=
-window.supabase.createClient(
-cfg.SUPABASE_URL,
-cfg.SUPABASE_PUBLISHABLE_KEY
+const supabaseClient = window.supabase.createClient(
+  cfg.SUPABASE_URL,
+  cfg.SUPABASE_PUBLISHABLE_KEY
 );
 
 async function crearPago(){
 
-const msg=document.getElementById("msg");
-const btn=document.getElementById("btn");
+  const msg = document.getElementById("msg");
+  const btn = document.getElementById("btn");
 
-msg.className="";
-msg.textContent="Creando enlace...";
+  msg.className = "";
+  msg.textContent = "Creando enlace...";
 
-btn.disabled=true;
+  btn.disabled = true;
 
-try{
+  try{
 
-const {data:{session}}=
-await supabaseClient.auth.getSession();
+    const { data: sessionData, error: sessionError } =
+      await supabaseClient.auth.getSession();
 
-if(!session)
-throw new Error(
-"Tu sesión ha caducado. Vuelve a iniciar sesión."
-);
+    if(sessionError){
+      throw new Error(sessionError.message);
+    }
 
-const body={
-name:document.getElementById("name").value.trim(),
-email:document.getElementById("email").value.trim(),
-amount:Number(document.getElementById("amount").value),
-concept:document.getElementById("concept").value.trim()
-};
-const {data,error}=
-await supabaseClient.functions.invoke(
-"create-special-payment",
-{body}
-);
+    if(!sessionData || !sessionData.session){
+      throw new Error(
+        "Tu sesión ha caducado. Vuelve a iniciar sesión."
+      );
+    }
 
-if(error)
-throw new Error(
-error.message||"No se pudo crear el pago."
-);
+    const name =
+      document.getElementById("name").value.trim();
 
-if(!data?.ok)
-throw new Error(
-data?.error||"No se pudo crear el pago."
-);
+    const email =
+      document.getElementById("email").value.trim();
 
-window._paymentUrl=data.payment_url;
+    const amount =
+      Number(document.getElementById("amount").value);
 
-msg.className="ok";
+    const concept =
+      document.getElementById("concept").value.trim();
 
-msg.innerHTML=`
-<div class="result">
-<strong>✅ Enlace creado</strong>
-<br><br>
-${esc(data.payment_url)}
-<br>
-<button onclick="copiar()">
-📋 Copiar enlace
-</button>
-</div>
-`;
+    if(!name){
+      throw new Error("Introduce el nombre del cliente.");
+    }
 
-}catch
+    if(!email){
+      throw new Error("Introduce el email del cliente.");
+    }
+
+    if(!amount || amount <= 0){
+      throw new Error("Introduce un importe válido.");
+    }
+
+    if(!concept){
+      throw new Error("Introduce el concepto del pago.");
+    }
+
+    const body = {
+      name: name,
+      email: email,
+      amount: amount,
+      concept: concept
+    };
+
+    const { data, error } =
+      await supabaseClient.functions.invoke(
+        "create-special-payment",
+        {
+          body: body
+        }
+      );
+
+    if(error){
+      throw new Error(
+        error.message || "No se pudo crear el pago."
+      );
+    }
+
+    if(!data || data.ok !== true){
+      throw new Error(
+        data?.error || "No se pudo crear el pago."
+      );
+    }
+
+    if(!data.payment_url){
+      throw new Error(
+        "PayPal no devolvió el enlace de pago."
+      );
+    }
+
+    window._paymentUrl = data.payment_url;
+
+    msg.className = "ok";
+
+    msg.innerHTML = `
+      <div class="result">
+        <strong>✅ Enlace de pago creado</strong>
+
+        <br><br>
+
+        <a
+          href="${esc(data.payment_url)}"
+          target="_blank"
+          rel="noopener"
+        >
+          🔗 Abrir pago de PayPal
+        </a>
+
+        <br><br>
+
+        <button
+          type="button"
+          onclick="copiar()"
+        >
+          📋 Copiar enlace
+        </button>
+      </div>
+    `;
+
+  }catch(error){
+
+    console.error(error);
+
+    msg.className = "error";
+
+    msg.textContent =
+      "❌ " +
+      (error.message || "Ha ocurrido un error.");
+
+  }finally{
+
+    btn.disabled = false;
+
+  }
+
+}
+
+function copiar(){
+
+  if(!window._paymentUrl){
+    alert("No hay ningún enlace para copiar.");
+    return;
+  }
+
+  navigator.clipboard
+    .writeText(window._paymentUrl)
+    .then(function(){
+      alert("✅ Enlace copiado.");
+    })
+    .catch(function(){
+      alert("No se pudo copiar automáticamente.");
+    });
+
+}
+
+function esc(value){
+
+  return String(value || "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+</script>
+
+</body>
+</html>
