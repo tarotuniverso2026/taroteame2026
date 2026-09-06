@@ -328,19 +328,36 @@ async function verCliente(id){
   detalle.classList.remove("hidden");
 
   detalle.innerHTML = `
-    <h2>${escapeHtml(cliente.name || "Cliente")}</h2>
+  <button class="secondary" onclick="document.getElementById('detalle').classList.add('hidden'); window.scrollTo({top:0,behavior:'smooth'});">
+    ← Volver a clientes
+  </button>
 
-    <div class="stat">📧 ${escapeHtml(cliente.email || "Sin email")}</div>
-    <div class="stat">📞 ${escapeHtml(cliente.phone || "Sin teléfono")}</div>
+  <h2>👤 ${escapeHtml(cliente.name || "Cliente")}</h2>
 
-    <h3>📝 Notas</h3>
-    <textarea id="notas">${escapeHtml(cliente.notes || "")}</textarea>
-    <button onclick="guardarNotas('${cliente.id}')">Guardar notas</button>
+  <div class="stat">
+    📧 <a href="mailto:${escapeHtml(cliente.email || "")}">
+      ${escapeHtml(cliente.email || "Sin email")}
+    </a>
+  </div>
 
-    <h3>📅 Historial de reservas</h3>
-    <div id="historial">Cargando...</div>
-  `;
+  <div class="stat">
+    📞 <a href="tel:${escapeHtml(cliente.phone || "")}">
+      ${escapeHtml(cliente.phone || "Sin teléfono")}
+    </a>
+  </div>
 
+  <h3>📝 Notas</h3>
+
+  <textarea id="notas">${escapeHtml(cliente.notes || "")}</textarea>
+
+  <button onclick="guardarNotas('${cliente.id}')">
+    💾 Guardar notas
+  </button>
+
+  <h3>📅 Historial de reservas</h3>
+
+  <div id="historial">Cargando...</div>
+`;
   const { data, error } = await supabaseClient
     .from("bookings")
     .select("*")
