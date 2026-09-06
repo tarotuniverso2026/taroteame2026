@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Taroteame — Crear pago especial</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+
+<style>
+body{
+  font-family:Arial;
+  background:#f5f2f8;
+  color:#241b2f;
+  margin:0;
+  padding:20px
+}
+.wrap{
+  max-width:560px;
+  margin:auto
+}
+.card{
+  background:#fff;
+  border-radius:18px;
+  padding:24px;
+  box-shadow:0 3px 14px #0001
+}
+h1{
+  color:#60377b
+}
+label{
+  display:block;
+  font-weight:bold;
+  margin:14px 0 6px
+}
+input,textarea{
+  width:100%;
+  box-sizing:border-box;
+  padding:13px;
+  border:1px solid #ccc;
+  border-radius:10px;
+  font-size:16px
+}
+button{
+  width:100%;
+  padding:14px;
+  border:0;
+  border-radius:12px;
+  background:#60377b;
+  color:#fff;
+  font-size:18px;
+  font-weight:bold;
+  margin-top:18px
+}
+.error{
+  color:#b00020
+}
+.ok{
+  color:#246b35
+}
+.result{
+  background:#f3e8f7;
+  border-radius:12px;
+  padding:16px;
+  margin-top:18px;
+  word-break:break-all
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+<div class="card">
+
+<h1>💳 Crear pago especial</h1>
+
+<p>Introduce el importe y concepto que quieras cobrar.</p>
+
+<label>Nombre del cliente</label>
+<input id="name" placeholder="Nombre y apellidos">
+
+<label>Email del cliente</label>
+<input id="email" type="email" placeholder="cliente@email.com">
+
+<label>Importe (€)</label>
+<input id="amount" type="number" min="0.01" step="0.01" placeholder="12.00">
+
+<label>Concepto</label>
+<textarea id="concept" rows="3" placeholder="Lectura especial"></textarea>
+
+<button id="btn" onclick="crearPago()">
+🟣 Crear enlace de pago
+</button>
+
+<div id="msg"></div>
+
+</div>
+</div>
+
+<script>
+
+const cfg=window.TAROTEAME_CONFIG||{};
+
+const supabaseClient=
+window.supabase.createClient(
+cfg.SUPABASE_URL,
+cfg.SUPABASE_PUBLISHABLE_KEY
+);
+
+async function crearPago(){
+
+const msg=document.getElementById("msg");
+const btn=document.getElementById("btn");
+
+msg.className="";
+msg.textContent="Creando enlace...";
+
+btn.disabled=true;
+
+try{
+
+const {data:{session}}=
+await supabaseClient.auth.getSession();
+
+if(!session)
+throw new Error(
+"Tu sesión ha caducado. Vuelve a iniciar sesión."
+);
+
+const body={
+name:name.value.trim(),
+email:email.value.trim(),
+amount:Number(amount.value),
+concept:concept.value.trim()
+};
+
+const {data,error}=
+await supabaseClient.functions.invoke(
+"create-special-payment",
+{body}
+);
+
+if(error)
+throw new Error(
+error.message||"No se pudo crear el pago."
+);
+
+if(!data?.ok)
+throw new Error(
+data?.error||"No se pudo crear el pago."
+);
+
+window._paymentUrl=data.payment_url;
+
+msg.className="ok";
+
+msg.innerHTML=`
+<div class="result">
+<strong>✅ Enlace creado</strong>
+<br><br>
+${esc(data.payment_url)}
+<br>
+<button onclick="copiar()">
+📋 Copiar enlace
+</button>
+</div>
+`;
+
+}catch
