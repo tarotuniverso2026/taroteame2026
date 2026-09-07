@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Taroteame — Reseñas</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+body{margin:0;background:#120d18;color:#f4eadc;font-family:Arial,sans-serif}
+main{max-width:700px;margin:auto;padding:30px 18px}
+h1{text-align:center;color:#d9aa55}
+.sub{text-align:center;color:#cfc3d5}
+.card{background:#1d1624;border:1px solid #493650;border-radius:14px;padding:20px;margin:18px 0}
+input,textarea,select{width:100%;box-sizing:border-box;padding:13px;margin:8px 0 14px;border-radius:9px;border:1px solid #59465f;background:#120d18;color:white}
+button{width:100%;padding:14px;border:0;border-radius:9px;background:#d9aa55;color:#120d18;font-weight:bold;font-size:16px}
+.review{border-top:1px solid #493650;padding:15px 0}
+.stars{color:#d9aa55;font-size:20px}
+small{color:#aaa}
+a{color:#d9aa55}
+</style>
+</head>
+
+<body>
+<main>
+
+<h1>🔮 Reseñas de Taroteame</h1>
+<p class="sub">Tu experiencia puede ayudar a otras personas a conocernos. ❤️</p>
+
+<div class="card">
+<h2>⭐ Déjanos tu reseña</h2>
+
+<label>Nombre</label>
+<input id="name" maxlength="60" placeholder="Tu nombre">
+
+<label>Valoración</label>
+<select id="rating">
+<option value="5">⭐⭐⭐⭐⭐</option>
+<option value="4">⭐⭐⭐⭐</option>
+<option value="3">⭐⭐⭐</option>
+<option value="2">⭐⭐</option>
+<option value="1">⭐</option>
+</select>
+
+<label>Tu experiencia</label>
+<textarea id="comment" maxlength="500" rows="5"
+placeholder="Cuéntanos brevemente tu experiencia..."></textarea>
+
+<button onclick="sendReview()">Publicar reseña</button>
+
+<p id="msg"></p>
+</div>
+
+<div class="card">
+<h2>❤️ Opiniones de nuestros clientes</h2>
+<div id="reviews">Cargando reseñas...</div>
+</div>
+
+<p style="text-align:center">
+<a href="index.html">← Volver a Taroteame</a>
+</p>
+
+</main>
+
+<script>
+const sb = supabase.createClient(
+"https://ozbbgfxixbgffxnhqpzh.supabase.co",
+"sb_publishable_Xag7GClzJc37vg2DQXhBVA_QfU0NUyd"
+);
+
+async function loadReviews(){
+const box=document.getElementById("reviews");
+
+const {data,error}=await sb
+.from("reviews")
+.select("name,rating,comment,created_at")
+.eq("approved",true)
+.order("created_at",{ascending:false});
+
+if(error){
+box.textContent="No se pudieron cargar las reseñas.";
+return;
+}
+
+if(!data || data.length===0){
+box.innerHTML="<p>Aún no hay reseñas. ¡Sé la primera! ❤️</p>";
+return;
+}
+
+box.innerHTML=data.map(r=>{
+const stars="⭐".repeat(Math.max(1,Math.min(5,r.rating)));
+return `
+<div class="review">
+<div class="stars">${stars}</div>
+<strong>${escapeHtml(r.name)}</strong>
+<p>${escapeHtml(r.comment)}</p>
+<small>${new Date(r.created_at).toLocaleDateString("es-ES")}</small>
+</div>`;
+}).join("");
+}
+
+async function sendReview(){
+const name=document.getElementById("name").value.trim();
+const rating=Number(document.getElementById("rating").value);
+const comment=document.getElementById("comment").value.trim();
+const msg=document.getElementById("msg");
+
+if(!name || !comment){
+msg.textContent="Completa tu nombre y tu experiencia.";
+return;
+}
+
+msg.textContent="Enviando reseña...";
+
+const {error}=await sb.from("reviews").insert({
+name:name,
+rating:rating,
+comment:comment,
+approved:false
+});
+
+if(error){
+console.error(error);
+msg.textContent="No se pudo enviar la reseña. Inténtalo de nuevo.";
+return;
+}
+
+document.getElementById("name").value="";
+document.getElementById("comment").value="";
+msg.textContent="✅ Gracias. Tu reseña será revisada antes de aparecer públicamente.";
+}
+
+function escapeHtml(text){
+return String(text)
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;")
+.replaceAll('"',"&quot;")
+.replaceAll("'","&#039;");
+}
+
+loadReviews();
+</script>
+
+</body>
+</html>
