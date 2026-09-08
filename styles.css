@@ -980,6 +980,7 @@ footer b {
 }
 @media (max-width: 600px) {
   .hero h1 {
+    
     font-size: 42px;
     line-height: 1.05;
   }
@@ -1003,5 +1004,29 @@ footer b {
 @media (max-width: 600px) {
   .menu-toggle {
     display: block;
+  }
+}
+@media (max-width: 600px) {
+  .nav {
+    position: relative;
+  }
+
+  .nav nav.mobile-open {
+    display: flex;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    padding: 12px 20px;
+    background: #fffaf4;
+    border-top: 1px solid #e4d8ca;
+    box-shadow: 0 8px 20px rgba(75,52,65,.08);
+    z-index: 1000;
+  }
+
+  .nav nav.mobile-open a {
+    padding: 12px 0;
   }
 }
