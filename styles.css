@@ -1030,3 +1030,10 @@ footer b {
     padding: 12px 0;
   }
 }
+@media (max-width: 600px) {
+  .nav-cta {
+    padding: 10px 15px;
+    font-size: 13px;
+    border-radius: 8px;
+  }
+}
