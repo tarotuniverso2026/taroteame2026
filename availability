@@ -55,8 +55,6 @@ Deno.serve(async (req) => {
 
 const day = new Date(date + "T12:00:00").getDay();
 
-// Lunes cerrado
-if (day !== 1) {
 
   const ranges = [
     [480, 900],
