@@ -283,7 +283,26 @@
 
 </section>
 
-<section id="confianza" class="section trust-section">
+<section class="section reviews-home">
+
+  <div class="section-head">
+    <p class="eyebrow">OPINIONES</p>
+    <h2>Lo que dicen nuestros clientes</h2>
+    <p>Experiencias reales de personas que han confiado en Taroteame.</p>
+  </div>
+
+  <div id="home-reviews" class="trust-grid">
+    <p class="hint">Cargando reseñas...</p>
+  </div>
+
+  <div style="text-align:center;margin-top:24px;">
+    <a class="secondary-btn" href="resenas.html">
+      ⭐ Ver todas las reseñas
+    </a>
+  </div>
+
+</section>
+  <section id="confianza" class="section trust-section">
 
   <div class="section-head">
 
@@ -416,8 +435,54 @@
   </div>
 
 </footer>
-
 <script src="config.js"></script>
+
+<script>
+const homeReviews = supabase.createClient(
+  TAROTEAME_CONFIG.SUPABASE_URL,
+  TAROTEAME_CONFIG.SUPABASE_PUBLISHABLE_KEY
+);
+
+async function loadHomeReviews() {
+  const box = document.getElementById("home-reviews");
+
+  const { data, error } = await homeReviews
+    .from("reviews")
+    .select("name,rating,comment,created_at")
+    .eq("approved", true)
+    .order("created_at", { ascending: false })
+    .limit(3);
+
+  if (error || !data || data.length === 0) {
+    box.innerHTML = '<p class="hint">Todavía no hay reseñas publicadas.</p>';
+    return;
+  }
+
+  box.innerHTML = data.map(r => {
+    const stars = "⭐".repeat(Math.max(1, Math.min(5, r.rating)));
+
+    return `
+      <div class="trust-card">
+        <span>${stars}</span>
+        <h3>${escapeReview(r.name)}</h3>
+        <p>${escapeReview(r.comment)}</p>
+      </div>
+    `;
+  }).join("");
+}
+
+function escapeReview(text) {
+  return String(text)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+loadHomeReviews();
+</script>
+
 <script src="app-v2.js"></script>
 
 </body>
