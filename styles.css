@@ -874,3 +874,39 @@ footer b {
   margin: 0;
   line-height: 1.5;
 }
+/* Confianza más elegante */
+.trust-section {
+  background: #eee5d9;
+}
+
+.trust-section .section-head {
+  margin-bottom: 35px;
+}
+
+.trust-section .trust-card {
+  background: #fffaf4;
+  border: 1px solid #dccdbb;
+  border-radius: 16px;
+  padding: 26px 22px;
+  box-shadow: 0 6px 20px rgba(75,52,65,.04);
+}
+
+.trust-section .trust-card > span {
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+
+.trust-section .trust-card h3 {
+  color: #4d3b50;
+  margin-bottom: 8px;
+}
+
+.trust-section .trust-card p {
+  color: #796d7c;
+  line-height: 1.5;
+}
+
+.trust-section .trust-card a {
+  color: #7650a5;
+  font-weight: 600;
+}
