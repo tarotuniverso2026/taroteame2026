@@ -968,3 +968,13 @@ footer b {
 .summary-total + label {
   margin-top: 6px;
 }
+/* Reserva más compacta en móvil */
+@media (max-width: 600px) {
+  .booking {
+    padding-top: 18px;
+  }
+
+  .booking-card {
+    margin-top: 8px;
+  }
+}
