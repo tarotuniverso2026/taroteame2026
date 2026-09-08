@@ -960,3 +960,11 @@ footer b {
 .summary .secure-note {
   margin: 12px 0;
 }
+/* Ajuste espacio resumen */
+.summary-total {
+  margin-bottom: -8px;
+}
+
+.summary-total + label {
+  margin-top: 6px;
+}
