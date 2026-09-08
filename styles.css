@@ -842,3 +842,17 @@ footer b {
   }
 }
 /* Actualización Taroteame */
+/* Ajuste de reseñas */
+#home-reviews {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 600px) {
+  #home-reviews {
+    grid-template-columns: 1fr;
+  }
+
+  #home-reviews .trust-card {
+    width: auto;
+  }
+}
