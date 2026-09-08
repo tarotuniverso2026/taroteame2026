@@ -721,12 +721,18 @@ footer b {
 }
 
 @media (max-width: 600px) {
+
   .nav {
-    min-height: 68px;
+    min-height: 62px;
+    padding: 8px 14px;
   }
 
   .brand {
     font-size: 17px;
+  }
+
+  .nav-links {
+    display: none;
   }
 
   .nav-cta {
@@ -735,58 +741,80 @@ footer b {
   }
 
   .contact-strip {
-    flex-direction: column;
+    padding: 10px 12px;
     gap: 8px;
     text-align: center;
   }
 
   .hero {
-    min-height: 620px;
-    padding: 50px 5% 35px;
+    min-height: 520px;
+    padding: 55px 7% 40px;
   }
 
   .hero h1 {
-    font-size: 42px;
+    font-size: 40px;
+    line-height: 1.02;
+  }
+
+  .hero p {
+    font-size: 16px;
+    line-height: 1.5;
   }
 
   .hero-art {
-    height: 300px;
+    height: 250px;
   }
 
   .moon {
-    width: 210px;
-    height: 210px;
+    width: 170px;
+    height: 170px;
   }
 
   .tarot-card {
-    width: 165px;
-    height: 260px;
-    padding: 17px;
-    font-size: 20px;
+    width: 145px;
+    height: 230px;
+    padding: 14px;
+    font-size: 18px;
   }
 
   .tarot-card div {
-    font-size: 50px;
+    font-size: 44px;
   }
 
   .section-head h2 {
-    font-size: 32px;
+    font-size: 31px;
   }
 
   .price-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .price-card {
+    padding: 18px 14px;
+  }
+
+  .price-card h3 {
+    font-size: 18px;
+  }
+
+  .price-card .price {
+    font-size: 30px;
   }
 
   .duration-options {
     grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
   }
 
   .slots {
     grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
   }
 
   .steps {
     grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
   }
 
   .step {
@@ -794,21 +822,23 @@ footer b {
   }
 
   .trust-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
 
   .about-card,
   .quote-card {
-    padding: 30px 24px;
+    padding: 25px 20px;
   }
 
   .about-card h2 {
-    font-size: 34px;
+    font-size: 32px;
   }
 
   footer {
     grid-template-columns: 1fr;
     text-align: center;
+    padding: 35px 20px;
   }
 }
 /* Actualización Taroteame */
