@@ -497,6 +497,21 @@ loadHomeReviews();
 </script>
 
 <script src="app-v2.js"></script>
+<script>
+const menuToggle = document.querySelector('.menu-toggle');
+const mobileNav = document.querySelector('.nav nav');
 
+if (menuToggle && mobileNav) {
+  menuToggle.addEventListener('click', () => {
+    mobileNav.classList.toggle('mobile-open');
+  });
+
+  mobileNav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileNav.classList.remove('mobile-open');
+    });
+  });
+}
+</script>
 </body>
 </html>
