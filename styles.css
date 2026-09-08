@@ -990,3 +990,18 @@ footer b {
     line-height: 1.05;
   }
 }
+/* Menú móvil */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: 0;
+  font-size: 26px;
+  color: #7650a5;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .menu-toggle {
+    display: block;
+  }
+}
