@@ -1012,7 +1012,7 @@ footer b {
   }
 
   .nav nav.mobile-open {
-    display: flex;
+    display: flex !important;
     position: absolute;
     top: 100%;
     left: 0;
