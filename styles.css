@@ -8,10 +8,10 @@ html {
 
 body {
   margin: 0;
-  background: #100b18;
-  color: #f6eee2;
+  background: #f7f1e8;
+  color: #33283a;
   font-family: Inter, Arial, sans-serif;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 a {
@@ -23,19 +23,19 @@ a {
   padding: 0 6%;
   display: flex;
   align-items: center;
-  gap: 36px;
-  border-bottom: 1px solid #ffffff14;
+  gap: 30px;
   position: sticky;
   top: 0;
   z-index: 20;
-  background: #100b18f2;
-  backdrop-filter: blur(14px);
+  background: rgba(255,252,247,.96);
+  border-bottom: 1px solid #e8dccb;
+  backdrop-filter: blur(12px);
 }
 
 .brand {
   font-family: Cinzel, serif;
-  letter-spacing: .16em;
-  color: #e8bd72;
+  letter-spacing: .13em;
+  color: #a47a32;
   text-decoration: none;
   font-weight: 700;
   white-space: nowrap;
@@ -43,28 +43,28 @@ a {
 
 .nav nav {
   display: flex;
-  gap: 28px;
+  gap: 25px;
   margin-left: auto;
 }
 
 .nav nav a {
-  color: #cfc3d5;
+  color: #5d5062;
   text-decoration: none;
   font-size: 14px;
 }
 
 .nav nav a:hover {
-  color: #e8bd72;
+  color: #7650a5;
 }
 
 .nav-cta,
 .primary-btn,
 .call-btn {
-  background: #d4a75d;
-  color: #17101c;
+  background: #7650a5;
+  color: #fff;
   text-decoration: none;
   padding: 12px 19px;
-  border-radius: 7px;
+  border-radius: 8px;
   font-weight: 700;
   font-size: 14px;
   display: inline-block;
@@ -74,17 +74,17 @@ a {
 .nav-cta:hover,
 .primary-btn:hover,
 .call-btn:hover {
-  background: #e8bd72;
+  background: #633d91;
 }
 
 .contact-strip {
-  padding: 14px 6%;
+  padding: 12px 6%;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 18px;
-  background: #130d1b;
-  border-bottom: 1px solid #ffffff10;
+  background: #efe5d5;
+  border-bottom: 1px solid #e2d4c0;
 }
 
 .contact-strip > div {
@@ -94,17 +94,17 @@ a {
 }
 
 .contact-label {
-  color: #b7a9bb;
+  color: #756878;
   font-size: 14px;
 }
 
 .contact-strip strong {
-  color: #f5eee4;
-  font-size: 17px;
+  color: #403246;
+  font-size: 16px;
 }
 
 .call-btn {
-  padding: 9px 16px;
+  padding: 8px 15px;
   font-size: 13px;
 }
 
@@ -113,10 +113,17 @@ a {
   display: grid;
   grid-template-columns: 1.05fr .95fr;
   align-items: center;
-  padding: 72px 9%;
+  padding: 70px 9%;
   overflow: hidden;
+  position: relative;
   background:
-    radial-gradient(circle at 75% 40%, #3a1f55 0, #191025 42%, #100b18 72%);
+    linear-gradient(
+      90deg,
+      rgba(38,24,34,.88),
+      rgba(57,35,45,.62),
+      rgba(35,22,31,.30)
+    ),
+    url("file_0000000066948211883c7164102a6cae.png") center/cover no-repeat;
 }
 
 .hero-copy {
@@ -125,7 +132,7 @@ a {
 }
 
 .eyebrow {
-  color: #d4a75d;
+  color: #d5ad69;
   letter-spacing: .2em;
   font-size: 11px;
   font-weight: 700;
@@ -133,17 +140,17 @@ a {
 
 .hero h1 {
   font: 600 clamp(42px, 6vw, 76px)/1.03 Cinzel, serif;
+  color: #fffaf3;
   margin: 18px 0;
 }
 
-.hero h1 span,
-.about-card h2 span {
-  color: #d4a75d;
+.hero h1 span {
+  color: #e0bd7d;
 }
 
 .lead {
   max-width: 530px;
-  color: #c8bdcd;
+  color: #eee3d8;
   font-size: 17px;
 }
 
@@ -161,17 +168,28 @@ a {
 
 .secondary-btn {
   display: inline-block;
-  color: #e8bd72;
-  border: 1px solid #d4a75d;
+  color: #7650a5;
+  border: 1px solid #7650a5;
   padding: 12px 18px;
-  border-radius: 7px;
+  border-radius: 8px;
   text-decoration: none;
   font-weight: 600;
+  background: transparent;
 }
 
 .secondary-btn:hover {
-  background: #d4a75d;
-  color: #17101c;
+  background: #7650a5;
+  color: #fff;
+}
+
+.hero .secondary-btn {
+  color: #fff;
+  border-color: #fff;
+}
+
+.hero .secondary-btn:hover {
+  background: #fff;
+  color: #7650a5;
 }
 
 .hero-trust {
@@ -179,18 +197,18 @@ a {
   gap: 20px;
   flex-wrap: wrap;
   margin-top: 22px;
-  color: #ddd2df;
+  color: #f1e7dd;
   font-size: 13px;
 }
 
 .hours {
-  color: #9f93a5;
+  color: #eaded4;
   font-size: 13px;
   margin-top: 20px;
 }
 
 .hours strong {
-  color: #d4a75d;
+  color: #e0bd7d;
 }
 
 .hero-art {
@@ -205,17 +223,16 @@ a {
   width: 320px;
   height: 320px;
   border-radius: 50%;
-  background:
-    radial-gradient(circle at 35% 35%, #fff2cf, #d3a55f 55%, #8c5c31);
-  box-shadow: 0 0 100px #d6aa5f2e;
+  background: radial-gradient(circle at 35% 35%, #fff2cf, #d3a55f 55%, #8c5c31);
+  opacity: .35;
 }
 
 .tarot-card {
   width: 220px;
   height: 350px;
   border: 1px solid #d4a75d;
-  border-radius: 5px;
-  background: linear-gradient(145deg, #24152f, #0d0a12);
+  border-radius: 6px;
+  background: linear-gradient(145deg, #382441, #17101c);
   z-index: 2;
   display: flex;
   flex-direction: column;
@@ -223,7 +240,7 @@ a {
   justify-content: space-between;
   padding: 24px;
   color: #d4a75d;
-  box-shadow: 0 30px 80px #000;
+  box-shadow: 0 25px 60px rgba(0,0,0,.45);
   font: 600 27px Cinzel;
   text-align: center;
 }
@@ -246,7 +263,7 @@ a {
 }
 
 .section {
-  padding: 92px 9%;
+  padding: 90px 9%;
 }
 
 .section-head {
@@ -257,114 +274,124 @@ a {
 
 .section-head h2 {
   font: 600 42px Cinzel, serif;
+  color: #493550;
   margin: 8px 0;
 }
 
 .section-head p:last-child {
-  color: #9e92a5;
+  color: #786b7a;
 }
 
 .price-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
-  max-width: 1100px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  max-width: 1150px;
   margin: auto;
 }
 
 .price-card {
   position: relative;
-  background: #18101f;
-  border: 1px solid #33253d;
-  color: #f6eee2;
+  background: #fffdf9;
+  border: 1px solid #e4d7c7;
+  color: #46374a;
   text-align: left;
-  padding: 28px;
-  border-radius: 8px;
+  padding: 25px;
+  border-radius: 12px;
   cursor: pointer;
-  min-height: 190px;
+  min-height: 185px;
   transition: .2s ease;
+  box-shadow: 0 8px 25px rgba(75,52,65,.06);
 }
 
 .price-card:hover,
 .price-card.featured {
-  border-color: #d4a75d;
+  border-color: #b99a61;
   transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(75,52,65,.10);
 }
 
 .price-card span {
   display: block;
-  color: #b7a9bb;
+  color: #766879;
 }
 
 .price-card strong {
   display: block;
-  font: 600 36px Cinzel, serif;
-  color: #e5bb72;
+  font: 600 34px Cinzel, serif;
+  color: #7650a5;
   margin: 16px 0 8px;
 }
 
 .price-card small {
-  color: #8e8294;
+  color: #8b7d8d;
 }
 
 .price-card b {
   position: absolute;
   top: 12px;
   right: 12px;
-  color: #100b18;
-  background: #d4a75d;
+  color: #fff;
+  background: #b28a4b;
   padding: 5px 8px;
-  border-radius: 4px;
+  border-radius: 5px;
   font-size: 10px;
 }
 
 .free-card {
-  border-color: #6d5833;
+  border-color: #d1b06e;
+  background: #fffaf0;
+}
+
+.free-card strong {
+  color: #ad8138;
 }
 
 .free-note {
   max-width: 1100px;
   margin: 25px auto 0;
   padding: 16px 18px;
-  border: 1px solid #c9a45c;
+  border: 1px solid #d7bd8a;
   border-radius: 10px;
-  background: #c9a45c0d;
-  color: #d8c9b2;
+  background: #fffaf0;
+  color: #756675;
   text-align: center;
   font-size: 14px;
 }
 
 .free-note strong {
-  color: #d9b76a;
+  color: #a87930;
 }
 
 .booking {
-  background: #0d0912;
+  background: #eee5d9;
 }
 
 .booking-card {
   max-width: 1100px;
   margin: auto;
-  background: #17101e;
-  border: 1px solid #32263a;
-  border-radius: 12px;
+  background: #fffdf9;
+  border: 1px solid #dfd2c3;
+  border-radius: 14px;
   overflow: hidden;
+  box-shadow: 0 10px 35px rgba(75,52,65,.08);
 }
 
 .steps {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  border-bottom: 1px solid #32263a;
+  border-bottom: 1px solid #e4d8ca;
 }
 
 .step {
   padding: 20px;
-  color: #8d8291;
+  color: #9b8e9d;
   font-size: 13px;
 }
 
 .step.active {
-  color: #f2e8d9;
+  color: #7650a5;
+  font-weight: 700;
 }
 
 .booking-grid {
@@ -376,9 +403,10 @@ a {
 
 .booking-grid label {
   display: block;
-  color: #c7bacb;
+  color: #5e5061;
   font-size: 12px;
   margin: 18px 0 8px;
+  font-weight: 600;
 }
 
 .duration-options {
@@ -389,23 +417,23 @@ a {
 
 .duration-options button,
 .slot {
-  background: #110c16;
-  color: #e9dfd2;
-  border: 1px solid #3b2c45;
+  background: #faf6f0;
+  color: #544557;
+  border: 1px solid #ded1c1;
   padding: 13px 8px;
-  border-radius: 5px;
+  border-radius: 7px;
   cursor: pointer;
 }
 
 .duration-options button.selected,
 .slot.selected {
-  border-color: #d4a75d;
-  background: #24172e;
+  border-color: #7650a5;
+  background: #f0e9f7;
 }
 
 .duration-options b {
   display: block;
-  color: #d4a75d;
+  color: #7650a5;
   margin-top: 4px;
 }
 
@@ -421,40 +449,40 @@ a {
 }
 
 .slot.selected {
-  background: #d4a75d;
-  color: #130d16;
+  background: #7650a5;
+  color: #fff;
   font-weight: 700;
 }
 
 .slot.busy {
-  opacity: .3;
+  opacity: .35;
   cursor: not-allowed;
   text-decoration: line-through;
 }
 
 .hint {
-  color: #786d7e;
+  color: #897b8b;
   font-size: 11px;
 }
 
 input {
   width: 100%;
-  background: #110c16;
-  color: #f5eee4;
-  border: 1px solid #3b2c45;
-  border-radius: 5px;
+  background: #fff;
+  color: #443548;
+  border: 1px solid #d9ccbd;
+  border-radius: 7px;
   padding: 13px;
   outline: none;
 }
 
 input:focus {
-  border-color: #d4a75d;
+  border-color: #7650a5;
 }
 
 .summary {
-  background: #110c16;
-  border: 1px solid #33263b;
-  border-radius: 8px;
+  background: #faf6f0;
+  border: 1px solid #e0d3c4;
+  border-radius: 10px;
   padding: 24px;
   height: max-content;
 }
@@ -468,13 +496,13 @@ input:focus {
 
 .summary-top {
   font-family: Cinzel;
-  color: #e5bb72;
+  color: #7650a5;
 }
 
 .summary-line,
 .summary-total {
   padding: 12px 0;
-  border-bottom: 1px solid #2b202f;
+  border-bottom: 1px solid #e4d9cc;
   font-size: 13px;
 }
 
@@ -485,11 +513,11 @@ input:focus {
 
 .summary-total strong {
   font: 600 28px Cinzel;
-  color: #d4a75d;
+  color: #7650a5;
 }
 
 .secure-note {
-  color: #c8bdcd;
+  color: #817382;
   font-size: 12px;
   line-height: 1.5;
   margin: 15px 0;
@@ -498,12 +526,16 @@ input:focus {
 .payment-message {
   font-size: 12px;
   margin: 10px 0;
-  color: #d4a75d;
+  color: #7650a5;
   min-height: 18px;
 }
 
+.reviews-home {
+  background: #fffaf4;
+}
+
 .trust-section {
-  background: #100b18;
+  background: #f7f1e8;
 }
 
 .trust-grid {
@@ -515,30 +547,32 @@ input:focus {
 }
 
 .trust-card {
-  background: #18101f;
-  border: 1px solid #33253d;
-  border-radius: 10px;
+  background: #fffdf9;
+  border: 1px solid #e2d6c7;
+  border-radius: 12px;
   padding: 28px 24px;
+  box-shadow: 0 7px 25px rgba(75,52,65,.05);
 }
 
 .trust-card > span {
   display: block;
-  font-size: 28px;
+  font-size: 25px;
   margin-bottom: 14px;
 }
 
 .trust-card h3 {
   margin: 0 0 10px;
   font-size: 18px;
+  color: #4d3b50;
 }
 
 .trust-card p {
-  color: #a99cac;
+  color: #796d7c;
   font-size: 14px;
 }
 
 .trust-card a {
-  color: #d4a75d;
+  color: #7650a5;
   text-decoration: none;
   font-weight: 600;
 }
@@ -547,40 +581,45 @@ input:focus {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
-  background: radial-gradient(circle at 50% 0, #291536, #100b18 55%);
+  background: #eee5d9;
 }
 
 .about-card,
 .quote-card {
-  border: 1px solid #36283f;
-  border-radius: 10px;
+  border: 1px solid #ded1c1;
+  border-radius: 12px;
   padding: 48px;
-  background: #18101fb3;
+  background: #fffaf4;
 }
 
 .about-card h2 {
   font: 600 42px/1.1 Cinzel;
+  color: #4c3a50;
   margin: 10px 0 20px;
 }
 
+.about-card h2 span {
+  color: #7650a5;
+}
+
 .about-card p {
-  color: #afa2b3;
+  color: #756978;
 }
 
 .quote-card {
   text-align: center;
   font: 26px Cinzel;
-  color: #afa2b3;
+  color: #8a798b;
 }
 
 .quote-card p {
-  color: #f0e6da;
+  color: #544357;
 }
 
 .quote-card small {
   font: 10px Inter;
   letter-spacing: .2em;
-  color: #8f8294;
+  color: #9a8b9c;
 }
 
 footer {
@@ -588,30 +627,46 @@ footer {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
   gap: 25px;
-  border-top: 1px solid #2d2234;
-  color: #8f8394;
+  background: #39283f;
+  color: #d9cbd9;
   font-size: 13px;
 }
 
+footer .brand {
+  color: #d9b76e;
+}
+
 footer a {
-  color: #cfc3d5;
+  color: #eee4ed;
   text-decoration: none;
 }
 
 footer a:hover {
-  color: #d4a75d;
+  color: #e1bd70;
+}
+
+footer b {
+  color: #fff8f1;
 }
 
 .footer-bottom {
   grid-column: 1 / -1;
   padding-top: 25px;
-  border-top: 1px solid #2d2234;
+  border-top: 1px solid #ffffff20;
   font-size: 11px;
 }
 
-/* TABLET */
-@media (max-width: 850px) {
+@media (max-width: 1000px) {
+  .price-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 
+  .trust-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 850px) {
   .nav {
     padding: 0 5%;
   }
@@ -644,54 +699,39 @@ footer a:hover {
   }
 
   .hero-art {
-    height: 420px;
+    height: 380px;
   }
 
-  .price-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .section {
+    padding: 70px 6%;
   }
 
-  .booking-grid,
+  .booking-grid {
+    grid-template-columns: 1fr;
+    padding: 25px;
+  }
+
   .about {
     grid-template-columns: 1fr;
   }
 
-  .booking-grid {
-    padding: 22px;
-  }
-
-  .duration-options {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .slots {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .trust-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
   footer {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* MÓVIL */
-@media (max-width: 520px) {
-
+@media (max-width: 600px) {
   .nav {
-    min-height: 70px;
-    padding: 0 5%;
+    min-height: 68px;
   }
 
   .brand {
-    font-size: 18px;
+    font-size: 17px;
   }
 
   .nav-cta {
+    padding: 10px 13px;
     font-size: 12px;
-    padding: 11px 13px;
   }
 
   .contact-strip {
@@ -700,112 +740,41 @@ footer a:hover {
     text-align: center;
   }
 
-  .contact-strip > div {
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .call-btn {
-    font-size: 13px;
-  }
-
   .hero {
-    padding: 55px 5% 45px;
+    min-height: 620px;
+    padding: 50px 5% 35px;
   }
 
   .hero h1 {
     font-size: 42px;
-    line-height: 1.05;
-  }
-
-  .lead {
-    font-size: 16px;
-  }
-
-  .hero-actions {
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .primary-btn,
-  .secondary-btn {
-    width: 100%;
-    text-align: center;
-  }
-
-  .hero-trust {
-    flex-direction: column;
-    gap: 8px;
-    font-size: 13px;
-  }
-
-  .hours {
-    line-height: 1.7;
   }
 
   .hero-art {
-    height: 330px;
+    height: 300px;
   }
 
   .moon {
-    width: 230px;
-    height: 230px;
+    width: 210px;
+    height: 210px;
   }
 
   .tarot-card {
     width: 165px;
-    height: 270px;
-    padding: 18px;
-    font-size: 21px;
+    height: 260px;
+    padding: 17px;
+    font-size: 20px;
   }
 
   .tarot-card div {
-    font-size: 52px;
-  }
-
-  .section {
-    padding: 65px 5%;
-  }
-
-  .section-head {
-    margin-bottom: 32px;
+    font-size: 50px;
   }
 
   .section-head h2 {
     font-size: 32px;
-    line-height: 1.15;
-  }
-
-  .section-head p:last-child {
-    font-size: 15px;
   }
 
   .price-grid {
     grid-template-columns: 1fr;
-  }
-
-  .price-card {
-    min-height: 170px;
-    padding: 25px;
-  }
-
-  .free-note {
-    font-size: 13px;
-    line-height: 1.5;
-  }
-
-  .steps {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  .step {
-    padding: 12px 4px;
-    font-size: 9px;
-    text-align: center;
-  }
-
-  .booking-grid {
-    padding: 16px;
   }
 
   .duration-options {
@@ -816,20 +785,16 @@ footer a:hover {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .summary {
-    padding: 20px;
+  .steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .step {
+    padding: 14px;
   }
 
   .trust-grid {
     grid-template-columns: 1fr;
-  }
-
-  .trust-card {
-    padding: 24px 20px;
-  }
-
-  .about {
-    gap: 14px;
   }
 
   .about-card,
@@ -838,63 +803,11 @@ footer a:hover {
   }
 
   .about-card h2 {
-    font-size: 32px;
-  }
-
-  .quote-card {
-    font-size: 21px;
+    font-size: 34px;
   }
 
   footer {
-    grid-template-columns: 1fr 1fr;
-    padding: 35px 5%;
-  }
-}
-/* RESEÑAS MÁS COMPACTAS EN MÓVIL */
-
-.reviews-home .trust-grid {
-  gap: 14px;
-}
-
-.reviews-home .trust-card {
-  padding: 20px 18px;
-}
-
-.reviews-home .trust-card > span {
-  font-size: 24px;
-  margin-bottom: 8px;
-}
-
-.reviews-home .trust-card h3 {
-  margin-bottom: 7px;
-}
-
-.reviews-home .trust-card p {
-  margin: 0;
-  line-height: 1.5;
-}
-
-@media (max-width: 520px) {
-  .reviews-home {
-    padding-top: 50px;
-    padding-bottom: 50px;
-  }
-
-  .reviews-home .section-head {
-    margin-bottom: 25px;
-  }
-
-  .reviews-home .trust-card {
-    padding: 18px 16px;
-  }
-}
-/* AJUSTE FINAL DE ESPACIO */
-@media (max-width: 520px) {
-  .reviews-home {
-    padding-bottom: 20px;
-  }
-
-  #confianza {
-    padding-top: 40px;
+    grid-template-columns: 1fr;
+    text-align: center;
   }
 }
