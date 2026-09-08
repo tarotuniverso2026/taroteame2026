@@ -978,3 +978,9 @@ footer b {
     margin-top: 8px;
   }
 }
+@media (max-width: 600px) {
+  .hero h1 {
+    font-size: 42px;
+    line-height: 1.05;
+  }
+}
