@@ -1037,3 +1037,23 @@ footer b {
     border-radius: 8px;
   }
 }
+@media (max-width: 600px) {
+  .contact-strip {
+    padding: 10px 16px;
+    gap: 10px;
+  }
+
+  .contact-label {
+    font-size: 13px;
+    text-align: center;
+  }
+
+  .contact-strip strong {
+    font-size: 15px;
+  }
+
+  .contact-strip .call-btn {
+    padding: 9px 14px;
+    font-size: 13px;
+  }
+}
