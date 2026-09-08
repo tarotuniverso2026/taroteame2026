@@ -817,9 +817,10 @@ footer b {
     gap: 10px;
   }
 
-  .step {
-    padding: 14px;
-  }
+.step {
+  padding: 10px 8px;
+  font-size: 14px;
+}
 
   .trust-grid {
     grid-template-columns: repeat(2, 1fr);
