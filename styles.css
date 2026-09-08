@@ -440,12 +440,15 @@ a {
 .slots {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
+  gap: 10px;
   min-height: 44px;
 }
 
 .slot {
-  padding: 10px;
+  min-height: 54px;
+  padding: 12px 8px;
+  border-radius: 12px;
+  font-size: 16px;
 }
 
 .slot.selected {
