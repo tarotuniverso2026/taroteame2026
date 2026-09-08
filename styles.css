@@ -888,3 +888,13 @@ footer a:hover {
     padding: 18px 16px;
   }
 }
+/* AJUSTE FINAL DE ESPACIO */
+@media (max-width: 520px) {
+  .reviews-home {
+    padding-bottom: 20px;
+  }
+
+  #confianza {
+    padding-top: 40px;
+  }
+}
