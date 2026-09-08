@@ -7,712 +7,776 @@
 <title>Taroteame — Reseñas</title>
 <meta name="description" content="Opiniones y experiencias de personas que han confiado en Taroteame.">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+
 <style>
-*{box-sizing:border-box}
-
-html{scroll-behavior:smooth}
-
-body{
-  margin:0;
-  background:#f8f4ef;
-  color:#2d2038;
-  font-family:Inter,Arial,sans-serif;
+*{
+box-sizing:border-box;
 }
 
-a{text-decoration:none}
+html{
+scroll-behavior:smooth;
+}
 
-.nav{
-  height:92px;
-  background:#160f1d;
-  display:flex;
-  align-items:center;
-  padding:0 5%;
-  position:relative;
-  z-index:10;
+body{
+margin:0;
+background:#faf8f5;
+color:#24152d;
+font-family:Inter,Arial,sans-serif;
+}
+
+a{
+text-decoration:none;
+color:inherit;
+}
+
+/* CABECERA */
+
+header{
+height:82px;
+background:#fff;
+display:flex;
+align-items:center;
+padding:0 5%;
+border-bottom:1px solid #eee7e1;
+position:relative;
+z-index:10;
 }
 
 .logo{
-  width:105px;
-  height:105px;
-  object-fit:contain;
-  margin-top:35px;
+width:68px;
+height:68px;
+object-fit:cover;
+border-radius:50%;
+display:block;
+}
+
+.logo-link{
+display:flex;
+align-items:center;
 }
 
 .nav-links{
-  display:flex;
-  gap:38px;
-  margin:auto;
+display:flex;
+align-items:center;
+gap:30px;
+margin:auto;
+font-size:15px;
 }
 
 .nav-links a{
-  color:#f5eee6;
-  font-size:15px;
+padding:28px 0;
+color:#28182f;
 }
 
 .nav-links a.active{
-  color:#e4b85f;
-  border-bottom:2px solid #e4b85f;
-  padding-bottom:12px;
+color:#6d3d6d;
+border-bottom:2px solid #c99b43;
 }
 
 .reserve-btn{
-  background:#e7bd68;
-  color:#24172b;
-  padding:15px 30px;
-  border-radius:30px;
-  font-weight:700;
+background:#6f416c;
+color:white;
+padding:14px 28px;
+border-radius:28px;
+font-weight:600;
 }
+
+/* PORTADA */
 
 .hero{
-  min-height:460px;
-  background:
-    radial-gradient(circle at 78% 35%,rgba(184,126,52,.55),transparent 22%),
-    radial-gradient(circle at 88% 75%,rgba(91,40,94,.75),transparent 30%),
-    linear-gradient(110deg,#24121d,#4b2928 48%,#211425);
-  position:relative;
-  overflow:hidden;
-  display:flex;
-  align-items:center;
-}
-
-.hero:after{
-  content:"✦   ✧   ☾   ✧   ✦";
-  position:absolute;
-  right:7%;
-  bottom:35px;
-  color:#e5b75d;
-  font-size:28px;
-  letter-spacing:15px;
-  opacity:.8;
+min-height:410px;
+position:relative;
+overflow:hidden;
+display:flex;
+align-items:center;
+background:
+linear-gradient(90deg,rgba(35,18,30,.92),rgba(62,34,43,.70),rgba(30,18,27,.28)),
+url("https://images.unsplash.com/photo-1515569067071-ec3b51335dd0?auto=format&fit=crop&w=1800&q=85");
+background-size:cover;
+background-position:center;
 }
 
 .hero-content{
-  width:100%;
-  max-width:1200px;
-  margin:auto;
-  padding:70px 7%;
-  color:white;
+width:90%;
+max-width:1100px;
+margin:auto;
+color:white;
+padding:60px 0;
 }
 
 .eyebrow{
-  color:#e3b85d;
-  letter-spacing:4px;
-  font-size:13px;
-  font-weight:700;
-  margin-bottom:18px;
+color:#e1b85c;
+font-size:15px;
+font-weight:700;
+letter-spacing:5px;
+margin-bottom:25px;
 }
 
 .hero h1{
-  font-family:Cinzel,serif;
-  font-size:64px;
-  line-height:1;
-  margin:0 0 15px;
-  color:#f3d58e;
+font-family:"Playfair Display",serif;
+font-size:68px;
+line-height:1;
+font-weight:500;
+margin:0 0 15px;
+color:#f3d58e;
 }
 
 .hero h2{
-  font-family:Cinzel,serif;
-  font-size:25px;
-  font-weight:500;
-  margin:0 0 25px;
+font-family:"Playfair Display",serif;
+font-size:28px;
+font-weight:400;
+margin:0 0 25px;
 }
 
 .hero p{
-  max-width:540px;
-  font-size:17px;
-  line-height:1.7;
-  color:#eee4e4;
+max-width:500px;
+font-size:17px;
+line-height:1.7;
+margin:0;
 }
 
 .decor{
-  width:120px;
-  height:2px;
-  background:#d7ad59;
-  margin:25px 0;
-  position:relative;
+margin:22px 0;
+color:#d8aa52;
+font-size:22px;
+letter-spacing:12px;
 }
 
-.decor:after{
-  content:"☾";
-  position:absolute;
-  left:50%;
-  top:-15px;
-  transform:translateX(-50%);
-  background:#38202a;
-  color:#e5b75d;
-  padding:0 12px;
-  font-size:22px;
-}
+/* RESEÑAS */
 
-.section{
-  max-width:1200px;
-  margin:auto;
-  padding:65px 25px;
+.reviews-section{
+padding:55px 5%;
+background:#faf8f5;
 }
 
 .section-title{
-  text-align:center;
-  margin-bottom:40px;
+text-align:center;
+margin-bottom:35px;
+}
+
+.section-title .eyebrow{
+color:#d3a74e;
+margin-bottom:15px;
 }
 
 .section-title h2{
-  font-family:Cinzel,serif;
-  font-size:38px;
-  margin:8px 0;
-  color:#42274e;
+font-family:"Playfair Display",serif;
+font-size:38px;
+font-weight:500;
+margin:0 0 8px;
 }
 
 .section-title p{
-  color:#5e5265;
-  font-size:16px;
+margin:0;
+color:#6c6070;
 }
 
+/* TARJETAS */
+
 .reviews-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:22px;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px;
+max-width:1150px;
+margin:auto;
 }
 
 .review-card{
-  background:#fff;
-  border:1px solid #eee5df;
-  border-radius:15px;
-  padding:28px;
-  box-shadow:0 8px 25px rgba(45,32,56,.08);
-  min-height:250px;
-  display:flex;
-  flex-direction:column;
+background:white;
+border:1px solid #eee6df;
+border-radius:14px;
+padding:27px;
+box-shadow:0 5px 20px rgba(40,20,40,.05);
 }
 
 .stars{
-  color:#d29d35;
-  font-size:22px;
-  letter-spacing:2px;
-  margin-bottom:18px;
+color:#d8a63d;
+font-size:22px;
+letter-spacing:2px;
+margin-bottom:18px;
 }
 
 .review-card p{
-  line-height:1.65;
-  color:#342a38;
-  flex:1;
+font-family:"Playfair Display",serif;
+font-size:17px;
+line-height:1.55;
+margin:0 0 25px;
+color:#322436;
 }
 
-.review-name{
-  font-weight:700;
-  color:#4a3154;
-  margin-top:15px;
+.client{
+display:flex;
+align-items:center;
+gap:12px;
+color:#55495b;
+font-size:14px;
 }
 
-.review-date{
-  font-size:12px;
-  color:#958c98;
-  margin-top:6px;
+.avatar{
+width:40px;
+height:40px;
+border-radius:50%;
+background:#eee9e9;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:19px;
 }
 
-.empty{
-  grid-column:1/-1;
-  text-align:center;
-  padding:35px;
-  color:#756b78;
+/* FORMULARIO */
+
+.write-section{
+max-width:1150px;
+margin:20px auto 55px;
+padding:30px;
+background:#fff;
+border:1px solid #eee6df;
+border-radius:15px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:30px;
 }
 
-.review-box{
-  background:#f1e8f1;
-  border-radius:16px;
-  padding:35px 40px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:30px;
+.write-icon{
+font-size:42px;
 }
 
-.review-box h2{
-  font-family:Cinzel,serif;
-  color:#42274e;
-  margin:0 0 8px;
-  font-size:30px;
+.write-text h2{
+font-family:"Playfair Display",serif;
+font-size:29px;
+font-weight:500;
+margin:0 0 7px;
 }
 
-.review-box p{
-  margin:0;
-  color:#5c5062;
+.write-text p{
+margin:0;
+color:#62566a;
 }
 
 .write-btn{
-  background:#63326d;
-  color:white;
-  padding:16px 30px;
-  border-radius:30px;
-  font-weight:700;
-  white-space:nowrap;
+background:#6f416c;
+color:#fff;
+border:0;
+padding:15px 28px;
+border-radius:28px;
+font-size:16px;
+font-weight:600;
+cursor:pointer;
 }
 
-.form-section{
-  max-width:750px;
-  margin:auto;
-  padding:20px 25px 70px;
-}
+/* FORMULARIO OCULTO */
 
 .form-card{
-  background:white;
-  border-radius:16px;
-  padding:35px;
-  box-shadow:0 8px 30px rgba(45,32,56,.1);
+display:none;
+max-width:700px;
+margin:0 auto 55px;
+padding:30px;
+background:#fff;
+border:1px solid #eee6df;
+border-radius:15px;
+}
+
+.form-card.show{
+display:block;
 }
 
 .form-card h2{
-  font-family:Cinzel,serif;
-  color:#42274e;
-  font-size:30px;
-  margin-top:0;
+font-family:"Playfair Display",serif;
+font-size:30px;
+font-weight:500;
 }
 
 label{
-  display:block;
-  margin:18px 0 7px;
-  font-weight:600;
-  color:#403344;
+display:block;
+margin:15px 0 7px;
+font-weight:600;
 }
 
 input,textarea,select{
-  width:100%;
-  padding:14px;
-  border:1px solid #d8ccd9;
-  border-radius:9px;
-  background:#fbf9fb;
-  color:#29212e;
-  font:inherit;
-}
-
-textarea{
-  resize:vertical;
+width:100%;
+padding:13px;
+border:1px solid #d9cfd8;
+border-radius:9px;
+font:inherit;
+background:#fff;
+color:#24152d;
 }
 
 .submit-btn{
-  width:100%;
-  border:0;
-  background:#63326d;
-  color:white;
-  padding:15px;
-  border-radius:9px;
-  margin-top:20px;
-  font-size:16px;
-  font-weight:700;
+width:100%;
+margin-top:18px;
+padding:14px;
+border:0;
+border-radius:28px;
+background:#6f416c;
+color:white;
+font-weight:600;
+font-size:16px;
+cursor:pointer;
 }
 
-#msg{
-  text-align:center;
-  margin-top:15px;
-}
+/* LLAMADA FINAL */
 
 .cta{
-  background:
-    radial-gradient(circle at 80% 40%,rgba(213,161,67,.45),transparent 25%),
-    linear-gradient(100deg,#21131e,#402229,#21131e);
-  color:white;
-  text-align:center;
-  padding:65px 25px;
+min-height:260px;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+color:white;
+background:
+linear-gradient(rgba(39,20,34,.72),rgba(39,20,34,.72)),
+url("https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1800&q=85");
+background-size:cover;
+background-position:center;
 }
 
 .cta h2{
-  font-family:Cinzel,serif;
-  font-size:35px;
-  color:#f0d18a;
-  margin:0 0 12px;
+font-family:"Playfair Display",serif;
+font-size:34px;
+font-weight:500;
+margin:0 0 10px;
 }
 
 .cta p{
-  margin:0 0 28px;
-  color:#eee4e4;
+margin:0 0 22px;
 }
 
-.cta .reserve-btn{
-  display:inline-block;
+.cta a{
+display:inline-block;
+background:#f0c968;
+color:#28172e;
+padding:14px 35px;
+border-radius:28px;
+font-weight:700;
 }
+
+/* PIE */
 
 footer{
-  background:#160f1d;
-  color:#d9cedc;
-  text-align:center;
-  padding:35px 20px;
-  font-size:14px;
+background:#fff;
+padding:45px 5%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:30px;
 }
 
-footer strong{
-  color:#e4b85f;
+.footer-logo{
+display:flex;
+align-items:center;
+gap:15px;
 }
+
+.footer-logo img{
+width:58px;
+height:58px;
+border-radius:50%;
+}
+
+.footer-title{
+font-family:"Playfair Display",serif;
+font-size:27px;
+}
+
+.footer-text{
+color:#675b69;
+}
+
+/* MÓVIL */
 
 @media(max-width:800px){
 
-  .nav{
-    height:80px;
-    padding:0 15px;
-  }
+header{
+height:74px;
+padding:0 18px;
+}
 
-  .logo{
-    width:75px;
-    height:75px;
-    margin-top:20px;
-  }
+.logo{
+width:58px;
+height:58px;
+}
 
-  .nav-links{
-    display:none;
-  }
+.nav-links{
+gap:15px;
+font-size:12px;
+}
 
-  .reserve-btn{
-    margin-left:auto;
-    padding:12px 18px;
-    font-size:13px;
-  }
+.nav-links a:nth-child(4),
+.nav-links a:nth-child(5){
+display:none;
+}
 
-  .hero{
-    min-height:390px;
-  }
+.reserve-btn{
+padding:11px 17px;
+font-size:13px;
+}
 
-  .hero-content{
-    padding:60px 25px;
-  }
+.hero{
+min-height:470px;
+}
 
-  .hero h1{
-    font-size:48px;
-  }
+.hero-content{
+padding:45px 25px;
+}
 
-  .hero h2{
-    font-size:20px;
-  }
+.hero h1{
+font-size:50px;
+}
 
-  .reviews-grid{
-    grid-template-columns:1fr;
-  }
+.hero h2{
+font-size:23px;
+}
 
-  .review-box{
-    flex-direction:column;
-    align-items:flex-start;
-    padding:30px 25px;
-  }
+.hero p{
+font-size:16px;
+}
 
-  .write-btn{
-    width:100%;
-    text-align:center;
-  }
+.reviews-section{
+padding:45px 18px;
+}
 
-  .section-title h2{
-    font-size:30px;
-  }
+.section-title h2{
+font-size:32px;
+}
 
-  .form-card{
-    padding:25px 20px;
-  }
+.reviews-grid{
+grid-template-columns:1fr;
+}
+
+.write-section{
+margin:10px 18px 45px;
+padding:25px;
+flex-direction:column;
+align-items:flex-start;
+}
+
+.write-btn{
+width:100%;
+}
+
+.form-card{
+margin:0 18px 45px;
+}
+
+.cta{
+padding:45px 20px;
+}
+
+.cta h2{
+font-size:29px;
+}
+
+footer{
+flex-direction:column;
+align-items:flex-start;
+}
+
 }
 </style>
 </head>
 
 <body>
 
-<header class="nav">
+<header>
 
-  <a href="index.html">
-<img class="logo" src="logo-taroteame.png" alt="Taroteame" style="border-radius:50%;">
-  </a>
+<a href="index.html" class="logo-link">
+<img src="logo-taroteame.png" class="logo" alt="Taroteame">
+</a>
 
-  <nav class="nav-links">
-    <a href="index.html">Inicio</a>
-    <a href="index.html#reservar">Reservas</a>
-    <a class="active" href="resenas.html">Reseñas</a>
-    <a href="index.html#confianza">Sobre Taroteame</a>
-    <a href="index.html#contacto">Contacto</a>
-  </nav>
+<nav class="nav-links">
+<a href="index.html">Inicio</a>
+<a href="index.html#reservar">Reservas</a>
+<a href="resenas.html" class="active">Reseñas</a>
+<a href="index.html#confianza">Sobre Taroteame</a>
+<a href="index.html#contacto">Contacto</a>
+</nav>
 
-  <a class="reserve-btn" href="index.html#reservar">
-    Reservar ahora
-  </a>
+<a href="index.html#reservar" class="reserve-btn">
+Reservar ahora
+</a>
 
 </header>
 
 <section class="hero">
 
-  <div class="hero-content">
+<div class="hero-content">
 
-    <div class="eyebrow">TAROTEAME · EXPERIENCIAS</div>
+<div class="eyebrow">TAROTEAME · EXPERIENCIAS</div>
 
-    <h1>Reseñas</h1>
+<h1>Reseñas</h1>
 
-    <h2>Historias reales que nos inspiran</h2>
+<h2>Historias reales que nos inspiran</h2>
 
-    <div class="decor"></div>
+<div class="decor">— ♡ —</div>
 
-    <p>
-      Gracias a todas las personas que confían en Taroteame.
-      Aquí compartimos las experiencias que han querido compartir
-      después de su consulta.
-    </p>
+<p>
+Gracias a todas las personas que confían en Taroteame.
+Aquí compartimos las experiencias que han querido compartir
+después de su consulta.
+</p>
 
-  </div>
-
-</section>
-
-<section class="section">
-
-  <div class="section-title">
-
-    <div class="eyebrow">OPINIONES</div>
-
-    <h2>Lo que dicen de Taroteame</h2>
-
-    <p>Opiniones reales de personas como tú</p>
-
-    <div class="decor" style="margin:25px auto"></div>
-
-  </div>
-
-  <div id="reviews" class="reviews-grid">
-
-    <div class="empty">
-      Cargando reseñas...
-    </div>
-
-  </div>
+</div>
 
 </section>
 
-<section class="section" style="padding-top:0">
+<section class="reviews-section">
 
-  <div class="review-box">
+<div class="section-title">
 
-    <div>
+<div class="eyebrow">OPINIONES</div>
 
-      <h2>Deja tu reseña</h2>
+<h2>Lo que dicen de Taroteame</h2>
 
-      <p>
-        Tu opinión también puede ayudar a otras personas.
-        Gracias por ser parte de Taroteame.
-      </p>
+<p>Opiniones reales de personas como tú</p>
 
-    </div>
+<div class="decor">— ♡ —</div>
 
-    <a class="write-btn" href="#escribir">
-      ✎ Escribir una reseña
-    </a>
+</div>
 
-  </div>
+<div id="reviews" class="reviews-grid">
+</div>
 
 </section>
 
-<section id="escribir" class="form-section">
+<section class="write-section">
 
-  <div class="form-card">
+<div class="write-icon">✎</div>
 
-    <h2>⭐ Cuéntanos tu experiencia</h2>
+<div class="write-text">
+<h2>Deja tu reseña</h2>
+<p>Tu opinión también puede ayudar a otras personas.</p>
+</div>
 
-    <p>
-      Tu reseña será revisada antes de aparecer públicamente.
-    </p>
+<button class="write-btn" onclick="openForm()">
+Escribir una reseña
+</button>
 
-    <label for="name">Nombre</label>
+</section>
 
-    <input
-      id="name"
-      maxlength="60"
-      placeholder="Tu nombre"
-      autocomplete="name"
-    >
+<section id="formulario" class="form-card">
 
-    <label for="rating">Valoración</label>
+<h2>⭐ Comparte tu experiencia</h2>
 
-    <select id="rating">
+<label>Nombre</label>
+<input id="name" maxlength="60" placeholder="Tu nombre">
 
-      <option value="5">⭐⭐⭐⭐⭐</option>
-      <option value="4">⭐⭐⭐⭐</option>
-      <option value="3">⭐⭐⭐</option>
-      <option value="2">⭐⭐</option>
-      <option value="1">⭐</option>
+<label>Valoración</label>
 
-    </select>
+<select id="rating">
+<option value="5">⭐⭐⭐⭐⭐</option>
+<option value="4">⭐⭐⭐⭐</option>
+<option value="3">⭐⭐⭐</option>
+<option value="2">⭐⭐</option>
+<option value="1">⭐</option>
+</select>
 
-    <label for="comment">Tu experiencia</label>
+<label>Tu experiencia</label>
 
-    <textarea
-      id="comment"
-      maxlength="500"
-      rows="5"
-      placeholder="Cuéntanos brevemente tu experiencia..."
-    ></textarea>
+<textarea
+id="comment"
+maxlength="500"
+rows="5"
+placeholder="Cuéntanos brevemente tu experiencia..."
+></textarea>
 
-    <button class="submit-btn" onclick="sendReview()">
-      Publicar reseña
-    </button>
+<button class="submit-btn" onclick="sendReview()">
+Publicar reseña
+</button>
 
-    <p id="msg"></p>
-
-  </div>
+<p id="msg"></p>
 
 </section>
 
 <section class="cta">
 
-  <h2>¿Quieres vivir tu propia experiencia?</h2>
+<div>
 
-  <p>
-    Reserva tu lectura y descubre lo que las cartas tienen para ti.
-  </p>
+<h2>¿Quieres vivir tu propia experiencia?</h2>
 
-  <a class="reserve-btn" href="index.html#reservar">
-    Reservar ahora
-  </a>
+<p>
+Reserva tu lectura y descubre lo que las cartas tienen para ti.
+</p>
+
+<a href="index.html#reservar">
+Reservar ahora
+</a>
+
+</div>
 
 </section>
 
 <footer>
 
-  <strong>TAROTEAME</strong>
+<div class="footer-logo">
 
-  <p>
-    Tu guía siempre contigo · Lecturas de tarot online
-  </p>
+<img src="logo-taroteame.png" alt="Taroteame">
 
-  <p>
-    <a href="index.html" style="color:#e4b85f">
-      Volver a Taroteame
-    </a>
-  </p>
+<div>
+<div class="footer-title">Taroteame</div>
+<div class="footer-text">Tu guía, siempre contigo</div>
+</div>
+
+</div>
+
+<div class="footer-text">
+Tu historia tiene muchas cartas por descubrir
+</div>
 
 </footer>
-
-<script src="config.js"></script>
 
 <script>
 
 const sb = supabase.createClient(
-  TAROTEAME_CONFIG.SUPABASE_URL,
-  TAROTEAME_CONFIG.SUPABASE_PUBLISHABLE_KEY
+"https://ozbbgfxixbgffxnhqpzh.supabase.co",
+"sb_publishable_Xag7GClzJc37vg2DQXhBVA_QfU0NUyd"
 );
+
+function openForm(){
+
+const form=document.getElementById("formulario");
+
+form.classList.add("show");
+
+form.scrollIntoView({
+behavior:"smooth"
+});
+
+}
 
 async function loadReviews(){
 
-  const box = document.getElementById("reviews");
+const box=document.getElementById("reviews");
 
-  const {data,error} = await sb
-    .from("reviews")
-    .select("name,rating,comment,created_at")
-    .eq("approved",true)
-    .order("created_at",{ascending:false});
+const {data,error}=await sb
+.from("reviews")
+.select("name,rating,comment,created_at")
+.eq("approved",true)
+.order("created_at",{ascending:false});
 
-  if(error){
+if(error){
 
-    box.innerHTML =
-      '<div class="empty">No se pudieron cargar las reseñas.</div>';
+box.innerHTML=
+"<p style='text-align:center'>No se pudieron cargar las reseñas.</p>";
 
-    return;
-  }
+return;
+}
 
-  if(!data || data.length === 0){
+if(!data || data.length===0){
 
-    box.innerHTML =
-      '<div class="empty">Todavía no hay reseñas publicadas. ❤️</div>';
+box.innerHTML=
+"<p style='text-align:center;grid-column:1/-1'>Aún no hay reseñas publicadas. ❤️</p>";
 
-    return;
-  }
+return;
+}
 
-  box.innerHTML = data.map(r => {
+box.innerHTML=data.map(r=>{
 
-    const rating = Math.max(1,Math.min(5,Number(r.rating) || 1));
+const rating=Math.max(1,Math.min(5,Number(r.rating)));
 
-    const stars = "★".repeat(rating);
+const stars="⭐".repeat(rating);
 
-    const date = r.created_at
-      ? new Date(r.created_at).toLocaleDateString("es-ES")
-      : "";
+return `
 
-    return `
-      <article class="review-card">
+<article class="review-card">
 
-        <div class="stars">${stars}</div>
+<div class="stars">${stars}</div>
 
-        <p>
-          “${escapeHtml(r.comment)}”
-        </p>
+<p>
+“${escapeHtml(r.comment)}”
+</p>
 
-        <div class="review-name">
-          ${escapeHtml(r.name)}
-        </div>
+<div class="client">
 
-        <div class="review-date">
-          Opinión publicada · ${date}
-        </div>
+<div class="avatar">👤</div>
 
-      </article>
-    `;
+<div>
+<strong>${escapeHtml(r.name)}</strong><br>
+<span>Cliente de Taroteame</span>
+</div>
 
-  }).join("");
+</div>
+
+</article>
+
+`;
+
+}).join("");
 
 }
 
 async function sendReview(){
 
-  const name =
-    document.getElementById("name").value.trim();
+const name=document
+.getElementById("name")
+.value
+.trim();
 
-  const rating =
-    Number(document.getElementById("rating").value);
+const rating=Number(
+document.getElementById("rating").value
+);
 
-  const comment =
-    document.getElementById("comment").value.trim();
+const comment=document
+.getElementById("comment")
+.value
+.trim();
 
-  const msg =
-    document.getElementById("msg");
+const msg=document.getElementById("msg");
 
-  if(!name || !comment){
+if(!name || !comment){
 
-    msg.textContent =
-      "Completa tu nombre y tu experiencia.";
+msg.textContent=
+"Completa tu nombre y tu experiencia.";
 
-    return;
-  }
+return;
+}
 
-  msg.textContent =
-    "Enviando reseña...";
+msg.textContent="Enviando reseña...";
 
-  const {error} = await sb
-    .from("reviews")
-    .insert({
-      name:name,
-      rating:rating,
-      comment:comment,
-      approved:false
-    });
+const {error}=await sb
+.from("reviews")
+.insert({
 
-  if(error){
+name:name,
+rating:rating,
+comment:comment,
+approved:false
 
-    console.error(error);
+});
 
-    msg.textContent =
-      "No se pudo enviar la reseña. Inténtalo de nuevo.";
+if(error){
 
-    return;
-  }
+console.error(error);
 
-  document.getElementById("name").value = "";
-  document.getElementById("comment").value = "";
+msg.textContent=
+"No se pudo enviar la reseña. Inténtalo de nuevo.";
 
-  msg.textContent =
-    "✅ Gracias. Tu reseña será revisada antes de aparecer públicamente.";
+return;
+}
+
+document.getElementById("name").value="";
+document.getElementById("comment").value="";
+
+msg.textContent=
+"✅ Gracias. Tu reseña será revisada antes de aparecer públicamente.";
 
 }
 
 function escapeHtml(text){
 
-  return String(text)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+return String(text)
+
+.replaceAll("&","&amp;")
+.replaceAll("<","&lt;")
+.replaceAll(">","&gt;")
+.replaceAll('"',"&quot;")
+.replaceAll("'","&#039;");
 
 }
 
