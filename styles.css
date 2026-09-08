@@ -850,3 +850,41 @@ footer a:hover {
     padding: 35px 5%;
   }
 }
+/* RESEÑAS MÁS COMPACTAS EN MÓVIL */
+
+.reviews-home .trust-grid {
+  gap: 14px;
+}
+
+.reviews-home .trust-card {
+  padding: 20px 18px;
+}
+
+.reviews-home .trust-card > span {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.reviews-home .trust-card h3 {
+  margin-bottom: 7px;
+}
+
+.reviews-home .trust-card p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+@media (max-width: 520px) {
+  .reviews-home {
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+
+  .reviews-home .section-head {
+    margin-bottom: 25px;
+  }
+
+  .reviews-home .trust-card {
+    padding: 18px 16px;
+  }
+}
