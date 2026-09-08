@@ -1,70 +1,424 @@
-w<!doctype html>
+<!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Taroteame: lecturas de tarot online, privadas y confidenciales. Reserva tu consulta de forma sencilla.">
 <title>Taroteame — Reserva tu lectura</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <link rel="stylesheet" href="styles.css">
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://www.paypal.com/sdk/js?client-id=BAAYB4xC7Hxndu6XMsU8Q8ZfJRd907MWPbBhjSlm7jGcgg0GFJLyKZvfo7O4VK7kPyoXw-oyqYa5o2F5xE&currency=EUR&locale=es_ES&components=buttons&debug=true"></script>
 </head>
+
 <body>
-<header class="nav"><a class="brand" href="#">TAROTEAME</a><nav><a href="#servicios">Servicios</a><a href="#reservar">Reservar</a><a href="#contacto">Contacto</a></nav><a class="nav-cta" href="#reservar">Reservar cita</a></header>
+
+<header class="nav">
+  <a class="brand" href="#">TAROTEAME</a>
+
+  <nav>
+    <a href="#servicios">Servicios</a>
+    <a href="#reservar">Reservar</a>
+    <a href="#confianza">Confianza</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+
+  <a class="nav-cta" href="#reservar">Reservar cita</a>
+</header>
+
 <main>
-  <div style="text-align:center;padding:12px;">
-  <a href="tel:+34900433087"
-     style="display:inline-block;
-            background:#d9aa55;
-            color:#120d18;
-            padding:14px 28px;
-            border-radius:10px;
-            text-decoration:none;
-            font-weight:600;
-            font-size:18px;
-            box-shadow:0 4px 12px rgba(0,0,0,.25);">
-    📞 Llamar a Taroteame
+
+<section class="contact-strip">
+  <div>
+    <span class="contact-label">¿Prefieres hablar?</span>
+    <strong>900 433 087</strong>
+  </div>
+
+  <a class="call-btn" href="tel:+34900433087">
+    📞 Llamar ahora
   </a>
-  <div style="margin-top:8px;
-              color:#d9aa55;
-              font-size:15px;">
-    900 433 087
+</section>
+
+<section class="hero">
+
+  <div class="hero-copy">
+
+    <p class="eyebrow">TAROT · INTUICIÓN · GUÍA</p>
+
+    <h1>
+      Descubre lo que<br>
+      <span>las cartas</span> tienen<br>
+      para ti.
+    </h1>
+
+    <p class="lead">
+      Una lectura cercana y personalizada para ayudarte a mirar lo que te preocupa desde otra perspectiva.
+    </p>
+
+    <div class="hero-actions">
+      <a class="primary-btn" href="#reservar">
+        Reservar mi consulta →
+      </a>
+
+      <a class="secondary-btn" href="tel:+34900433087">
+        📞 Llamar ahora
+      </a>
+    </div>
+
+    <div class="hero-trust">
+      <span>🔒 Privada y confidencial</span>
+      <span>💳 Pago seguro con PayPal</span>
+    </div>
+
+    <p class="hours">
+      <strong>Todos los días</strong> · 08:00 — 15:00 y 17:00 — 23:30
+    </p>
+
   </div>
-</div>
+
+  <div class="hero-art">
+
+    <div class="moon"></div>
+
+    <div class="tarot-card">
+      <div>☾</div>
+      <strong>THE<br>MOON</strong>
+      <small>XVIII</small>
+    </div>
+
+    <div class="stars">
+      ✦ · ✧ · ✦<br>
+      · ✧ · ✦ ·
+    </div>
+
   </div>
-<section class="hero"><div><p class="eyebrow">TAROT · INTUICIÓN · GUÍA</p><h1>Descubre lo que<br><span>las cartas</span> tienen<br>para ti.</h1><p class="lead">Una lectura cercana y personalizada para ayudarte a mirar tu camino desde otra perspectiva.</p><a class="primary-btn" href="#reservar">Elegir mi lectura →</a><p class="hours">Martes a domingo · 08:00 — 15:00 y 17:00 — 23:30 · Lunes cerrado</p></div><div class="hero-art"><div class="moon"></div><div class="tarot-card"><div>☾</div><strong>THE<br>MOON</strong><small>XVIII</small></div><div class="stars">✦ · ✧ · ✦<br>· ✧ · ✦ ·</div></div></section>
-<section id="servicios" class="section"><div class="section-head"><p class="eyebrow">MIS LECTURAS</p><h2>Elige tu momento</h2><p>Selecciona la duración que mejor encaje contigo.</p></div><div class="price-grid">
-<button class="price-card" data-duration="10" data-free="true"><span>Reserva gratuita</span><strong>0 €</strong><small>10 min · Sin pago</small></button>
-  <div style="margin:18px 0 28px;padding:16px 18px;border:1px solid #c9a45c;border-radius:12px;background:rgba(201,164,92,.08);color:#d8c9b2;text-align:center;font-size:15px;line-height:1.6;">
-  ✨ <strong style="color:#d9b76a;">Consulta gratuita</strong><br>
-  <span>Exclusivamente para consultas sobre trabajos especiales y valoración previa.</span>
+
+</section>
+
+<section id="servicios" class="section">
+
+  <div class="section-head">
+    <p class="eyebrow">MIS LECTURAS</p>
+    <h2>Elige tu momento</h2>
+    <p>Escoge la duración que mejor encaje contigo.</p>
   </div>
-  <button class="price-card" data-duration="10"><span>10 min</span><strong>8 €</strong><small>Una pregunta concreta</small></button>
-<button class="price-card" data-duration="20"><span>20 min</span><strong>15 €</strong><small>Una mirada más profunda</small></button>
-<button class="price-card featured" data-duration="30"><span>30 min</span><strong>23 €</strong><small>Lectura completa</small><b>Más elegida</b></button>
-<button class="price-card" data-duration="60"><span>1 hora</span><strong>48 €</strong><small>Sesión en profundidad</small></button>
-</div></section>
-<section id="reservar" class="section booking"><div class="section-head"><p class="eyebrow">RESERVA</p><h2>Tu cita, paso a paso</h2><p>Elige duración, fecha y hora. El hueco se bloquea durante el pago.</p></div>
-<div class="booking-card"><div class="steps"><div class="step active">1 · Duración</div><div class="step">2 · Fecha y hora</div><div class="step">3 · Datos</div><div class="step">4 · PayPal</div></div>
-<div class="booking-grid"><div>
-<label>Duración</label><div id="duration-options" class="duration-options">
-<button data-duration="10">10 min <b>8 €</b></button><button data-duration="20">20 min <b>15 €</b></button><button class="selected" data-duration="30">30 min <b>23 €</b></button><button data-duration="60">1 hora <b>48 €</b></button></div>
-<label for="date">Fecha</label><input id="date" type="date">
-<label>Horas disponibles</label><div id="slots" class="slots"><p class="hint">Selecciona una fecha.</p></div><p class="hint">Martes a domingo · 08:00–15:00 y 17:00–23:30. Lunes cerrado. Las citas se bloquean automáticamente.
-</div>
-<aside class="summary"><div class="summary-top"><span>Tu reserva</span><span>✦</span></div>
-<div class="summary-line"><span>Lectura</span><strong id="summary-duration">30 min</strong></div><div class="summary-line"><span>Fecha</span><strong id="summary-date">—</strong></div><div class="summary-line"><span>Hora</span><strong id="summary-time">—</strong></div><div class="summary-total"><span>Total</span><strong id="summary-price">23 €</strong></div>
-<label for="name">Nombre</label><input id="name" placeholder="Tu nombre" autocomplete="name">
-<label for="email">Email</label><input id="email" type="email" placeholder="tu@email.com" autocomplete="email">
-<div id="paypal-button-container"></div><div id="message" class="payment-message"></div>
-</aside></div></div></section>
-<section class="about section"><div class="about-card"><p class="eyebrow">TAROTEAME</p><h2>Tu guía.<br>Tu momento.<br><span>Tu camino.</span></h2><p>Las cartas no deciden por ti. Te ayudan a hacer preguntas, escuchar tu intuición y mirar las opciones desde otra perspectiva.</p></div><div class="quote-card">“<p>Cuando cambia la pregunta, también puede cambiar la forma de mirar la respuesta.</p><small>— TAROTEAME</small></div></section>
+
+  <div class="price-grid">
+
+    <button class="price-card free-card"
+            data-duration="10"
+            data-free="true">
+
+      <span>✨ Reserva gratuita</span>
+      <strong>0 €</strong>
+      <small>10 min · Sin pago</small>
+      <b>Consulta previa</b>
+
+    </button>
+
+    <button class="price-card" data-duration="10">
+      <span>10 min</span>
+      <strong>8 €</strong>
+      <small>Una pregunta concreta</small>
+    </button>
+
+    <button class="price-card" data-duration="20">
+      <span>20 min</span>
+      <strong>15 €</strong>
+      <small>Una mirada más profunda</small>
+    </button>
+
+    <button class="price-card featured" data-duration="30">
+      <span>30 min</span>
+      <strong>23 €</strong>
+      <small>Lectura completa</small>
+      <b>Más elegida</b>
+    </button>
+
+    <button class="price-card" data-duration="60">
+      <span>1 hora</span>
+      <strong>48 €</strong>
+      <small>Sesión en profundidad</small>
+    </button>
+
+  </div>
+
+  <div class="free-note">
+    ✨ <strong>Consulta gratuita</strong><br>
+    <span>
+      Exclusivamente para consultas sobre trabajos especiales y valoración previa.
+    </span>
+  </div>
+
+</section>
+
+<section id="reservar" class="section booking">
+
+  <div class="section-head">
+
+    <p class="eyebrow">RESERVA</p>
+
+    <h2>Reserva tu cita</h2>
+
+    <p>
+      Elige duración, fecha y hora. Las horas ocupadas aparecen bloqueadas y tu hueco se reserva durante el pago.
+    </p>
+
+  </div>
+
+  <div class="booking-card">
+
+    <div class="steps">
+      <div class="step active">1 · Duración</div>
+      <div class="step">2 · Fecha y hora</div>
+      <div class="step">3 · Datos</div>
+      <div class="step">4 · PayPal</div>
+    </div>
+
+    <div class="booking-grid">
+
+      <div>
+
+        <label>Duración</label>
+
+        <div id="duration-options" class="duration-options">
+
+          <button data-duration="10">
+            10 min <b>8 €</b>
+          </button>
+
+          <button data-duration="20">
+            20 min <b>15 €</b>
+          </button>
+
+          <button class="selected" data-duration="30">
+            30 min <b>23 €</b>
+          </button>
+
+          <button data-duration="60">
+            1 hora <b>48 €</b>
+          </button>
+
+        </div>
+
+        <label for="date">Fecha</label>
+
+        <input id="date" type="date">
+
+        <label>Horas disponibles</label>
+
+        <div id="slots" class="slots">
+          <p class="hint">Selecciona una fecha.</p>
+        </div>
+
+        <p class="hint booking-hours">
+          Todos los días · 08:00–15:00 y 17:00–23:30 ·
+          Las citas se bloquean automáticamente.
+        </p>
+
+      </div>
+
+      <aside class="summary">
+
+        <div class="summary-top">
+          <span>Tu reserva</span>
+          <span>✦</span>
+        </div>
+
+        <div class="summary-line">
+          <span>Lectura</span>
+          <strong id="summary-duration">30 min</strong>
+        </div>
+
+        <div class="summary-line">
+          <span>Fecha</span>
+          <strong id="summary-date">—</strong>
+        </div>
+
+        <div class="summary-line">
+          <span>Hora</span>
+          <strong id="summary-time">—</strong>
+        </div>
+
+        <div class="summary-total">
+          <span>Total</span>
+          <strong id="summary-price">23 €</strong>
+        </div>
+
+        <label for="name">Nombre</label>
+
+        <input
+          id="name"
+          placeholder="Tu nombre"
+          autocomplete="name"
+        >
+
+        <label for="email">Email</label>
+
+        <input
+          id="email"
+          type="email"
+          placeholder="tu@email.com"
+          autocomplete="email"
+        >
+
+        <div class="secure-note">
+          🔒 Tus datos se utilizan únicamente para gestionar tu reserva.
+        </div>
+
+        <div id="paypal-button-container"></div>
+
+        <div id="message" class="payment-message"></div>
+
+      </aside>
+
+    </div>
+
+  </div>
+
+</section>
+
+<section id="confianza" class="section trust-section">
+
+  <div class="section-head">
+
+    <p class="eyebrow">POR QUÉ TAROTEAME</p>
+
+    <h2>Un espacio para hablar con tranquilidad</h2>
+
+    <p>
+      Queremos que reservar y hablar contigo sea sencillo desde el primer momento.
+    </p>
+
+  </div>
+
+  <div class="trust-grid">
+
+    <div class="trust-card">
+      <span>🔒</span>
+      <h3>Privada y confidencial</h3>
+      <p>
+        Tu consulta es un espacio personal para hablar con tranquilidad.
+      </p>
+    </div>
+
+    <div class="trust-card">
+      <span>📅</span>
+      <h3>Reserva sencilla</h3>
+      <p>
+        Elige tu duración, fecha y hora y comprueba la disponibilidad.
+      </p>
+    </div>
+
+    <div class="trust-card">
+      <span>💳</span>
+      <h3>Pago seguro</h3>
+      <p>
+        Las consultas de pago se gestionan mediante PayPal.
+      </p>
+    </div>
+
+    <div class="trust-card">
+      <span>⭐</span>
+      <h3>Opiniones</h3>
+      <p>
+        Conoce las experiencias de otras personas antes de reservar.
+      </p>
+      <a href="resenas.html">Ver reseñas →</a>
+    </div>
+
+  </div>
+
+</section>
+
+<section class="about section">
+
+  <div class="about-card">
+
+    <p class="eyebrow">TAROTEAME</p>
+
+    <h2>
+      Tu guía.<br>
+      Tu momento.<br>
+      <span>Tu camino.</span>
+    </h2>
+
+    <p>
+      Las cartas no deciden por ti. Te ayudan a hacer preguntas,
+      escuchar tu intuición y mirar las opciones desde otra perspectiva.
+    </p>
+
+    <a class="secondary-btn" href="resenas.html">
+      ⭐ Ver reseñas
+    </a>
+
+  </div>
+
+  <div class="quote-card">
+
+    “
+
+    <p>
+      Cuando cambia la pregunta, también puede cambiar la forma de mirar la respuesta.
+    </p>
+
+    <small>— TAROTEAME</small>
+
+  </div>
+
+</section>
+
 </main>
-<footer id="contacto"><div><a class="brand" href="#">TAROTEAME</a><p>Lecturas de tarot y citas online.</p></div><div><b>Horario</b><p>Martes a domingo<br>08:00 — 15:00 y 17:00 — 23:30<br>Lunes cerrado</p></div><div><b>Reserva</b><p><a href="#reservar">Elegir una cita</a></p></div><div><b>Pago</b><p>PayPal · EUR</p></div><div class="footer-bottom">© <span id="year"></span> Taroteame</div></footer>
-<script src="config.js"></script><script src="app-v2.js"></script>
-<div style="text-align:center;margin:25px 0;">
-  <a href="resenas.html"
-     style="display:inline-block;background:#d9aa55;color:#120d18;padding:14px 28px;border-radius:10px;text-decoration:none;font-weight:600;font-size:17px;">
-    ⭐ Ver reseñas de Taroteame
-  </a>
-</div></body></html>
+
+<footer id="contacto">
+
+  <div>
+    <a class="brand" href="#">TAROTEAME</a>
+    <p>Lecturas de tarot y citas online.</p>
+  </div>
+
+  <div>
+    <b>Horario</b>
+    <p>
+      Todos los días<br>
+      08:00 — 15:00<br>
+      17:00 — 23:30
+    </p>
+  </div>
+
+  <div>
+    <b>Reserva</b>
+    <p>
+      <a href="#reservar">Elegir una cita</a>
+    </p>
+  </div>
+
+  <div>
+    <b>Contacto</b>
+    <p>
+      <a href="tel:+34900433087">900 433 087</a>
+    </p>
+  </div>
+
+  <div>
+    <b>Pago</b>
+    <p>PayPal · EUR</p>
+  </div>
+
+  <div class="footer-bottom">
+    © <span id="year"></span> Taroteame ·
+    <a href="resenas.html">Reseñas</a>
+  </div>
+
+</footer>
+
+<script src="config.js"></script>
+<script src="app-v2.js"></script>
+
+</body>
+</html>
