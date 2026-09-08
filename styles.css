@@ -984,3 +984,9 @@ footer b {
     line-height: 1.05;
   }
 }
+@media (max-width: 600px) {
+  .hero h1 {
+    font-size: 42px;
+    line-height: 1.05;
+  }
+}
