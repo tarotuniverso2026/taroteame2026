@@ -936,3 +936,27 @@ footer b {
     margin-bottom: 8px;
   }
 }
+/* Ajuste final del resumen de reserva */
+.summary {
+  padding: 24px 26px;
+}
+
+.summary-line {
+  padding: 8px 0;
+}
+
+.summary-total {
+  padding: 10px 0 6px;
+}
+
+.summary-total strong {
+  font-size: 32px;
+}
+
+.summary label {
+  margin-top: 12px;
+}
+
+.summary .secure-note {
+  margin: 12px 0;
+}
