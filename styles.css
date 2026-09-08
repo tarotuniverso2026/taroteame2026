@@ -910,3 +910,25 @@ footer b {
   color: #7650a5;
   font-weight: 600;
 }
+/* Confianza compacta en móvil */
+@media (max-width: 600px) {
+  .trust-section .trust-card {
+    padding: 20px 18px;
+  }
+
+  .trust-section .trust-card h3 {
+    font-size: 20px;
+    margin-bottom: 6px;
+  }
+
+  .trust-section .trust-card p {
+    font-size: 15px;
+    line-height: 1.4;
+    margin: 0;
+  }
+
+  .trust-section .trust-card > span {
+    font-size: 21px;
+    margin-bottom: 8px;
+  }
+}
