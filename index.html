@@ -570,5 +570,52 @@ if (chatToggle && chatBox && chatClose) {
   });
 }
   </script>
+  <script>
+const chatInput = document.getElementById('chat-input');
+const chatSend = document.getElementById('chat-send');
+
+let chatVisitorId = localStorage.getItem('taroteame_chat_visitor_id');
+
+if (!chatVisitorId) {
+  chatVisitorId = crypto.randomUUID();
+  localStorage.setItem('taroteame_chat_visitor_id', chatVisitorId);
+}
+
+if (chatInput && chatSend) {
+  chatSend.addEventListener('click', async () => {
+    const message = chatInput.value.trim();
+
+    if (!message) return;
+
+    try {
+      const { error } = await supabase
+        .from('chat_messages')
+        .insert({
+          visitor_id: chatVisitorId,
+          sender: 'visitor',
+          message: message
+        });
+
+      if (error) throw error;
+
+      chatInput.value = '';
+
+      const messages = document.getElementById('chat-messages');
+
+      const newMessage = document.createElement('div');
+      newMessage.style.cssText =
+        'background:#7650a5;color:#fff;padding:10px 13px;border-radius:12px;margin-top:10px;margin-left:30px;';
+
+      newMessage.textContent = message;
+      messages.appendChild(newMessage);
+      messages.scrollTop = messages.scrollHeight;
+
+    } catch (error) {
+      console.error('Error enviando mensaje:', error);
+      alert('No se pudo enviar el mensaje. Inténtalo de nuevo.');
+    }
+  });
+}
+  </script>
 </body>
 </html>
