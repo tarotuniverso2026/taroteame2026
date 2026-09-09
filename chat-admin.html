@@ -331,22 +331,17 @@ responder.style.cssText =
 responder.onclick = () => responderCliente(visitorId, bloque);
 
 bloque.appendChild(responder);
-    mensajes.forEach(msg => {
-      const linea = document.createElement("p");
+    const ultimo = mensajes[mensajes.length - 1];
 
-      linea.style.cssText =
-        "padding:10px;margin:6px 0;border-radius:10px;background:" +
-        (msg.sender === "visitor" ? "#f3eadf" : "#7650a5") +
-        ";color:" +
-        (msg.sender === "visitor" ? "#544557" : "#fff");
+const ultimoMensaje = document.createElement("p");
 
-      linea.textContent =
-        (msg.sender === "visitor" ? "Cliente: " : "Tú: ") +
-        msg.message;
+ultimoMensaje.textContent =
+  "Último mensaje: " + ultimo.message;
 
-      bloque.appendChild(linea);
-    });
+ultimoMensaje.style.cssText =
+  "margin:8px 0 12px;color:#544557;";
 
+bloque.appendChild(ultimoMensaje);
     lista.appendChild(bloque);
   });
 }
