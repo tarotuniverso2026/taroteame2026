@@ -527,7 +527,23 @@ if (menuToggle && mobileNav) {
     });
   });
 }
+  
 </script>
+  <script>
+const chatToggle = document.getElementById('chat-toggle');
+const chatBox = document.getElementById('chat-box');
+const chatClose = document.getElementById('chat-close');
+
+if (chatToggle && chatBox && chatClose) {
+  chatToggle.addEventListener('click', () => {
+    chatBox.classList.add('open');
+  });
+
+  chatClose.addEventListener('click', () => {
+    chatBox.classList.remove('open');
+  });
+}
+  </script>
   <a class="whatsapp-float" href="https://wa.me/34711528435?text=Hola%20Taroteame%2C%20me%20gustar%C3%ADa%20hablar%20con%20un%20agente." target="_blank" rel="noopener" aria-label="Hablar con un agente por WhatsApp">
   <span class="whatsapp-icon">💬</span>
   <span>Hablar con un agente</span>
