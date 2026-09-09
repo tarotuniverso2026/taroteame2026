@@ -417,9 +417,14 @@ async function responderCliente(visitorId, bloque) {
     "max-height:350px;overflow-y:auto;margin-bottom:12px;";
 
   (data || []).forEach(msg => {
-    const burbuja = document.createElement("div");
+  const burbuja = document.createElement("div");
 
-    burbuja.textContent = msg.message;
+  const hora = new Date(msg.created_at).toLocaleTimeString("es-ES", {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+
+  burbuja.textContent = msg.message + " · " + hora;
 
     burbuja.style.cssText =
       msg.sender === "visitor"
