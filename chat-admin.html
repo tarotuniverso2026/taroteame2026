@@ -281,6 +281,72 @@ document
   });
 
 </script>
+<script>
+async function cargarConversaciones() {
+  const lista = document.getElementById("chat-list");
 
+  const { data, error } = await sb
+    .from("chat_messages")
+    .select("visitor_id, sender, message, created_at")
+    .order("created_at", { ascending: true });
+
+  if (error) {
+    console.error(error);
+    lista.innerHTML = "<p>❌ No se pudieron cargar las conversaciones.</p>";
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    lista.innerHTML = "<p>No hay mensajes todavía.</p>";
+    return;
+  }
+
+  const grupos = {};
+
+  data.forEach(msg => {
+    if (!grupos[msg.visitor_id]) {
+      grupos[msg.visitor_id] = [];
+    }
+    grupos[msg.visitor_id].push(msg);
+  });
+
+  lista.innerHTML = "";
+
+  Object.entries(grupos).forEach(([visitorId, mensajes]) => {
+    const bloque = document.createElement("div");
+
+    bloque.style.cssText =
+      "margin-top:20px;padding:15px;border:1px solid #ddd;border-radius:12px;";
+
+    const titulo = document.createElement("h4");
+    titulo.textContent = "💬 Cliente";
+    bloque.appendChild(titulo);
+
+    mensajes.forEach(msg => {
+      const linea = document.createElement("p");
+
+      linea.style.cssText =
+        "padding:10px;margin:6px 0;border-radius:10px;background:" +
+        (msg.sender === "visitor" ? "#f3eadf" : "#7650a5") +
+        ";color:" +
+        (msg.sender === "visitor" ? "#544557" : "#fff");
+
+      linea.textContent =
+        (msg.sender === "visitor" ? "Cliente: " : "Tú: ") +
+        msg.message;
+
+      bloque.appendChild(linea);
+    });
+
+    lista.appendChild(bloque);
+  });
+}
+
+sb.auth.onAuthStateChange((event, session) => {
+  if (session) {
+    setTimeout(cargarConversaciones, 300);
+  }
+});
+</script>
 </body>
 </html>
