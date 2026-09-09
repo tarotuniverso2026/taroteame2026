@@ -328,7 +328,7 @@ responder.type = "button";
 responder.style.cssText =
   "margin:10px 0;padding:10px 16px;border:0;border-radius:10px;background:#7650a5;color:#fff;font-weight:700;cursor:pointer;";
 
-responder.onclick = () => responderCliente(visitorId);
+responder.onclick = () => responderCliente(visitorId, bloque);
 
 bloque.appendChild(responder);
     mensajes.forEach(msg => {
@@ -358,27 +358,49 @@ sb.auth.onAuthStateChange((event, session) => {
 });
 </script>
   <script>
-async function responder.onclick = () => responderCliente(visitorId, bloque); {
-  const mensaje = prompt("Escribe tu respuesta:");
+async function responderCliente(visitorId, bloque) {
+    const caja = document.createElement("div");
+  caja.style.cssText =
+    "display:flex;gap:8px;margin-top:12px;";
 
-  if (!mensaje || !mensaje.trim()) return;
+  const input = document.createElement("input");
+  input.type = "text";
+  input.placeholder = "Escribe tu respuesta...";
+  input.style.cssText =
+    "flex:1;padding:12px;border:1px solid #ddd;border-radius:10px;";
 
-  const { error } = await sb
-    .from("chat_messages")
-    .insert({
-      visitor_id: visitorId,
-      sender: "admin",
-      message: mensaje.trim()
-    });
+  const enviar = document.createElement("button");
+  enviar.textContent = "➤ Enviar";
+  enviar.type = "button";
+  enviar.style.cssText =
+    "padding:12px 16px;border:0;border-radius:10px;background:#7650a5;color:#fff;font-weight:700;cursor:pointer;";
 
-  if (error) {
-    alert("❌ No se pudo enviar la respuesta.");
-    console.error(error);
-    return;
-  }
+  enviar.onclick = async () => {
+    const mensaje = input.value.trim();
 
-  alert("✅ Respuesta enviada.");
-  cargarConversaciones();
+    if (!mensaje) return;
+
+    const { error } = await sb
+      .from("chat_messages")
+      .insert({
+        visitor_id: visitorId,
+        sender: "admin",
+        message: mensaje
+      });
+
+    if (error) {
+      alert("❌ No se pudo enviar la respuesta.");
+      console.error(error);
+      return;
+    }
+
+    input.value = "";
+    cargarConversaciones();
+  };
+
+  caja.appendChild(input);
+  caja.appendChild(enviar);
+  bloque.appendChild(caja);
 }
   </script>
 </body>
