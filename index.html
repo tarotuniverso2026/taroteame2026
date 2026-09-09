@@ -589,7 +589,7 @@ if (chatInput && chatSend) {
   chatSend.addEventListener('click', async () => {
     const message = chatInput.value.trim();
 
-    if (!message) return;
+if (!message && chatCustomerName) return;
     if (!chatCustomerName) {
   const messages = document.getElementById('chat-messages');
 
