@@ -608,6 +608,8 @@ if (chatInput && chatSend) {
         .from('chat_messages')
         .insert({
           visitor_id: chatVisitorId,
+          customer_name: 
+            chatCustomerName,
           sender: 'visitor',
           message: message
         });
