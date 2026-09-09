@@ -591,16 +591,60 @@ if (chatInput && chatSend) {
 
     if (!message) return;
     if (!chatCustomerName) {
-  chatCustomerName = prompt("¿Cómo te llamas?");
+  const messages = document.getElementById('chat-messages');
 
-  if (!chatCustomerName || !chatCustomerName.trim()) return;
+  if (!document.getElementById('chat-name-form')) {
+    const form = document.createElement('div');
 
-  chatCustomerName = chatCustomerName.trim().slice(0, 80);
+    form.id = 'chat-name-form';
+    form.style.cssText =
+      'background:#f3eadf;padding:15px;border-radius:14px;margin-bottom:10px;';
 
-  localStorage.setItem(
-    'taroteame_chat_customer_name',
-    chatCustomerName
-  );
+    form.innerHTML = `
+      <div style="font-weight:700;color:#7650a5;margin-bottom:6px;">
+        💜 Antes de empezar
+      </div>
+      <div style="color:#544557;margin-bottom:10px;">
+        ¿Cómo te llamas?
+      </div>
+      <div style="display:flex;gap:8px;">
+        <input id="chat-name-input"
+          type="text"
+          maxlength="80"
+          placeholder="Tu nombre"
+          style="flex:1;padding:10px;border:1px solid #d7bd8a;border-radius:10px;">
+        <button id="chat-name-continue"
+          type="button"
+          style="padding:10px 13px;border:0;border-radius:10px;background:#7650a5;color:#fff;font-weight:700;">
+          Continuar →
+        </button>
+      </div>
+    `;
+
+    messages.appendChild(form);
+    messages.scrollTop = messages.scrollHeight;
+
+    document.getElementById('chat-name-continue').onclick = () => {
+      const nameInput = document.getElementById('chat-name-input');
+      const name = nameInput.value.trim();
+
+      if (!name) return;
+
+      chatCustomerName = name.slice(0, 80);
+
+      localStorage.setItem(
+        'taroteame_chat_customer_name',
+        chatCustomerName
+      );
+
+      form.remove();
+
+      chatSend.click();
+    };
+  }
+
+  return;
+    }
     }
 
     try {
