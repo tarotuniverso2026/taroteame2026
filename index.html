@@ -584,12 +584,24 @@ if (!chatVisitorId) {
   chatVisitorId = crypto.randomUUID();
   localStorage.setItem('taroteame_chat_visitor_id', chatVisitorId);
 }
-
+let chatCustomerName = localStorage.getItem('taroteame_chat_customer_name') || '';
 if (chatInput && chatSend) {
   chatSend.addEventListener('click', async () => {
     const message = chatInput.value.trim();
 
     if (!message) return;
+    if (!chatCustomerName) {
+  chatCustomerName = prompt("¿Cómo te llamas?");
+
+  if (!chatCustomerName || !chatCustomerName.trim()) return;
+
+  chatCustomerName = chatCustomerName.trim().slice(0, 80);
+
+  localStorage.setItem(
+    'taroteame_chat_customer_name',
+    chatCustomerName
+  );
+    }
 
     try {
       const { error } = await chatSupabase
