@@ -573,6 +573,10 @@ if (chatToggle && chatBox && chatClose) {
   <script>
 const chatInput = document.getElementById('chat-input');
 const chatSend = document.getElementById('chat-send');
+    const chatSupabase = window.supabase.createClient(
+  TAROTEAME_CONFIG.SUPABASE_URL,
+  TAROTEAME_CONFIG.SUPABASE_PUBLISHABLE_KEY
+);
 
 let chatVisitorId = localStorage.getItem('taroteame_chat_visitor_id');
 
@@ -588,7 +592,7 @@ if (chatInput && chatSend) {
     if (!message) return;
 
     try {
-      const { error } = await supabase
+      const { error } = await chatSupabase
         .from('chat_messages')
         .insert({
           visitor_id: chatVisitorId,
