@@ -333,16 +333,28 @@ responder.onclick = () => responderCliente(visitorId, bloque);
 bloque.appendChild(responder);
     const ultimo = mensajes[mensajes.length - 1];
 
+const estado = document.createElement("p");
+
+estado.textContent =
+  ultimo.sender === "visitor"
+    ? "🔴 Nuevo mensaje"
+    : "🟢 Respondido";
+
+estado.style.cssText =
+  "margin:8px 0 6px;font-weight:700;color:#544557;";
+
+bloque.appendChild(estado);
+
 const ultimoMensaje = document.createElement("p");
 
 ultimoMensaje.textContent =
   "Último mensaje: " + ultimo.message;
 
 ultimoMensaje.style.cssText =
-  "margin:8px 0 12px;color:#544557;";
+  "margin:0 0 12px;color:#544557;";
 
 bloque.appendChild(ultimoMensaje);
-    lista.appendChild(bloque);
+lista.appendChild(bloque);
   });
 }
 
