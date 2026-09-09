@@ -1,15 +1,15 @@
 <!doctype html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
 
-  <title>Taroteame — Chat</title>
+  <title>Taroteame — Chat privado</title>
 
   <link rel="stylesheet" href="styles.css">
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="config.js"></script>
 </head>
 
 <body>
@@ -27,91 +27,218 @@
     <p>Gestiona las conversaciones desde aquí.</p>
   </div>
 
-  <div id="login" class="booking-card" style="max-width:520px;margin:auto;padding:28px">
+  <!-- LOGIN -->
 
-    <label>Email</label>
-    <input id="email" type="email" autocomplete="email">
+  <div id="login"
+       class="booking-card"
+       style="max-width:520px;margin:auto;padding:28px;">
 
-    <label>Contraseña</label>
-    <input id="password" type="password" autocomplete="current-password">
+    <label for="email">Email</label>
 
-    <button id="loginBtn" class="nav-cta"
-            style="margin-top:18px;border:0;cursor:pointer;">
+    <input
+      id="email"
+      type="email"
+      autocomplete="email"
+      placeholder="Tu email"
+    >
+
+    <label for="password">Contraseña</label>
+
+    <input
+      id="password"
+      type="password"
+      autocomplete="current-password"
+      placeholder="Tu contraseña"
+    >
+
+    <button
+      id="loginBtn"
+      class="nav-cta"
+      type="button"
+      style="margin-top:18px;border:0;cursor:pointer;"
+    >
       Entrar
     </button>
 
-    <p id="loginMsg" class="payment-message"></p>
+    <p
+      id="loginMsg"
+      class="payment-message"
+    ></p>
 
   </div>
 
-  <div id="panel" style="display:none;max-width:900px;margin:auto;">
 
-    <div class="booking-card" style="padding:20px;">
+  <!-- PANEL -->
+
+  <div
+    id="panel"
+    style="display:none;max-width:900px;margin:auto;"
+  >
+
+    <div
+      class="booking-card"
+      style="padding:20px;"
+    >
 
       <h3>💬 Conversaciones</h3>
 
-      <button id="notificationsBtn"
-              class="nav-cta"
-              style="border:0;cursor:pointer;margin-top:15px;">
+      <p id="status">
+        ✅ Sesión iniciada correctamente.
+      </p>
+
+
+      <!-- NOTIFICACIONES -->
+
+      <button
+        id="notificationsBtn"
+        class="nav-cta"
+        type="button"
+        style="border:0;cursor:pointer;margin-top:15px;"
+      >
         🔔 Activar avisos
       </button>
 
       <p id="notificationMsg"></p>
-      
- <script>     
-const cfg = window.TAROTEAME_CONFIG || {};
+
+
+      <!-- CHAT -->
+
+      <div id="chat-list"></div>
+
+    </div>
+
+  </div>
+
+</main>
+
+
+<script>
+
+const SUPABASE_URL =
+  "https://ozbbgfxixbgffxnhqpzh.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_Xag7GClzJc37vg2DQXhBVA_QfU0NUyd";
+
 
 const sb = supabase.createClient(
-  cfg.SUPABASE_URL,
-  cfg.SUPABASE_PUBLISHABLE_KEY
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
 );
 
-const login = document.getElementById("login");
-const panel = document.getElementById("panel");
-const loginMsg = document.getElementById("loginMsg");
 
-document.getElementById("loginBtn").onclick = async () => {
+const login =
+  document.getElementById("login");
+
+const panel =
+  document.getElementById("panel");
+
+const loginMsg =
+  document.getElementById("loginMsg");
+
+const loginBtn =
+  document.getElementById("loginBtn");
+
+
+loginBtn.addEventListener("click", async () => {
 
   loginMsg.textContent = "Entrando...";
 
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
+  const email =
+    document.getElementById("email")
+      .value
+      .trim();
 
-  const { error } = await sb.auth.signInWithPassword({
-    email,
-    password
+  const password =
+    document.getElementById("password")
+      .value;
+
+
+  if (!email || !password) {
+
+    loginMsg.textContent =
+      "Escribe tu email y contraseña.";
+
+    return;
+  }
+
+
+  try {
+
+    const { error } =
+      await sb.auth.signInWithPassword({
+        email: email,
+        password: password
+      });
+
+
+    if (error) {
+
+      loginMsg.textContent =
+        "Error: " + error.message;
+
+      return;
+    }
+
+
+    login.style.display = "none";
+
+    panel.style.display = "block";
+
+
+    document.getElementById("status")
+      .textContent =
+      "✅ Sesión iniciada correctamente.";
+
+  } catch (error) {
+
+    console.error(error);
+
+    loginMsg.textContent =
+      "❌ Error al iniciar sesión.";
+
+  }
+
+});
+
+
+
+/* NOTIFICACIONES */
+
+document
+  .getElementById("notificationsBtn")
+  .addEventListener("click", async () => {
+
+    const msg =
+      document.getElementById("notificationMsg");
+
+
+    if (!("Notification" in window)) {
+
+      msg.textContent =
+        "❌ Este navegador no admite notificaciones.";
+
+      return;
+    }
+
+
+    const permission =
+      await Notification.requestPermission();
+
+
+    if (permission === "granted") {
+
+      msg.textContent =
+        "✅ Avisos activados correctamente.";
+
+    } else {
+
+      msg.textContent =
+        "❌ Los avisos no están activados.";
+
+    }
+
   });
-
-  if (error) {
-    loginMsg.textContent = "Error: " + error.message;
-    return;
-  }
-
-  login.style.display = "none";
-  panel.style.display = "block";
-
-  document.getElementById("status").textContent =
-    "Sesión iniciada correctamente.";
-};
-
-document.getElementById("notificationsBtn").onclick = async () => {
-
-  if (!("Notification" in window)) {
-    document.getElementById("notificationMsg").textContent =
-      "Este navegador no admite notificaciones.";
-    return;
-  }
-
-  const permission = await Notification.requestPermission();
-
-  if (permission === "granted") {
-    document.getElementById("notificationMsg").textContent =
-      "✅ Avisos activados correctamente.";
-  } else {
-    document.getElementById("notificationMsg").textContent =
-      "Los avisos no están activados.";
-  }
-};
 
 </script>
 
