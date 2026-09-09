@@ -532,5 +532,29 @@ if (menuToggle && mobileNav) {
   <span class="whatsapp-icon">💬</span>
   <span>Hablar con un agente</span>
   </a>
+  <div id="chat-widget" class="chat-widget">
+  <button id="chat-toggle" class="chat-toggle" type="button">
+    💬 Hablar con Taroteame
+  </button>
+
+  <div id="chat-box" class="chat-box">
+    <div class="chat-header">
+      <strong>Taroteame</strong>
+      <button id="chat-close" type="button">×</button>
+    </div>
+
+    <div id="chat-messages" class="chat-messages">
+      <div class="chat-welcome">
+        Hola 👋<br>
+        ¿En qué podemos ayudarte?
+      </div>
+    </div>
+
+    <div class="chat-input-area">
+      <input id="chat-input" type="text" placeholder="Escribe tu mensaje..." maxlength="2000">
+      <button id="chat-send" type="button">➤</button>
+    </div>
+  </div>
+  </div>
 </body>
 </html>
