@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Generar claves Taroteame</title>
+</head>
+<body>
+  <h2>Claves de notificaciones</h2>
+
+  <button id="generar">Generar claves</button>
+
+  <p>Clave pública:</p>
+  <textarea id="publica" rows="5" style="width:100%"></textarea>
+
+  <p>Clave privada:</p>
+  <textarea id="privada" rows="5" style="width:100%"></textarea>
+
+  <script>
+    function base64url(buffer) {
+      return btoa(String.fromCharCode(...new Uint8Array(buffer)))
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_")
+        .replace(/=+$/, "");
+    }
+
+    document.getElementById("generar").onclick = async () => {
+      const keys = await crypto.subtle.generateKey(
+        {
+          name: "ECDH",
+          namedCurve: "P-256"
+        },
+        true,
+        ["deriveBits"]
+      );
+
+      const publicKey = await crypto.subtle.exportKey(
+        "raw",
+        keys.publicKey
+      );
+
+      const privateKey = await crypto.subtle.exportKey(
+        "jwk",
+        keys.privateKey
+      );
+
+      document.getElementById("publica").value =
+        base64url(publicKey);
+
+      document.getElementById("privada").value =
+        privateKey.d;
+    };
+  </script>
+</body>
+</html>
