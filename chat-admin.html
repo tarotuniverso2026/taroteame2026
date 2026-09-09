@@ -348,5 +348,29 @@ sb.auth.onAuthStateChange((event, session) => {
   }
 });
 </script>
+  <script>
+async function responderCliente(visitorId) {
+  const mensaje = prompt("Escribe tu respuesta:");
+
+  if (!mensaje || !mensaje.trim()) return;
+
+  const { error } = await sb
+    .from("chat_messages")
+    .insert({
+      visitor_id: visitorId,
+      sender: "admin",
+      message: mensaje.trim()
+    });
+
+  if (error) {
+    alert("❌ No se pudo enviar la respuesta.");
+    console.error(error);
+    return;
+  }
+
+  alert("✅ Respuesta enviada.");
+  cargarConversaciones();
+}
+  </script>
 </body>
 </html>
