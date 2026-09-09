@@ -683,6 +683,7 @@ if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("/service-worker.js");
 }
     async function cargarRespuestasChat() {
+        if (document.getElementById('chat-name-form')) return;
   const { data, error } = await chatSupabase
     .rpc('get_my_chat_messages', {
       p_visitor_id: chatVisitorId
