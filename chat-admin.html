@@ -67,7 +67,7 @@
 
   </div>
 
-
+cli
   <!-- PANEL -->
 
   <div
@@ -319,7 +319,7 @@ async function cargarConversaciones() {
       "margin-top:20px;padding:15px;border:1px solid #ddd;border-radius:12px;";
 
     const titulo = document.createElement("h4");
-    titulo.textContent = "💬 Cliente";
+    titulo.textContent = "👤 " + (mensajes[0].customer_name || "Cliente");
     bloque.appendChild(titulo);
 const responder = document.createElement("button");
 
