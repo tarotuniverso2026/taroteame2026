@@ -639,6 +639,36 @@ if (chatInput && chatSend) {
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("/service-worker.js");
 }
+    async function cargarRespuestasChat() {
+  const { data, error } = await chatSupabase
+    .rpc('get_my_chat_messages', {
+      p_visitor_id: chatVisitorId
+    });
+
+  if (error || !data) return;
+
+  const messages = document.getElementById('chat-messages');
+  if (!messages) return;
+
+  messages.innerHTML = '';
+
+  data.forEach(msg => {
+    const bubble = document.createElement('div');
+
+    bubble.style.cssText =
+      msg.sender === 'admin'
+        ? 'background:#f3eadf;color:#544557;padding:10px 13px;border-radius:12px;margin-top:10px;margin-right:30px;'
+        : 'background:#7650a5;color:#fff;padding:10px 13px;border-radius:12px;margin-top:10px;margin-left:30px;';
+
+    bubble.textContent = msg.message;
+    messages.appendChild(bubble);
+  });
+
+  messages.scrollTop = messages.scrollHeight;
+}
+
+cargarRespuestasChat();
+setInterval(cargarRespuestasChat, 5000);
   </script>
 </body>
 </html>
