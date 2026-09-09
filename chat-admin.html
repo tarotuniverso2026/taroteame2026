@@ -312,7 +312,18 @@ async function cargarConversaciones() {
 
   lista.innerHTML = "";
 
-  Object.entries(grupos).forEach(([visitorId, mensajes]) => {
+  Object.entries(grupos)
+  .sort(([, a], [, b]) => {
+    const ultimoA = a[a.length - 1];
+    const ultimoB = b[b.length - 1];
+
+    if (ultimoA.sender !== ultimoB.sender) {
+      return ultimoA.sender === "visitor" ? -1 : 1;
+    }
+
+    return new Date(ultimoB.created_at) - new Date(ultimoA.created_at);
+  })
+  .forEach(([visitorId, mensajes]) => {
     const bloque = document.createElement("div");
 
     bloque.style.cssText =
