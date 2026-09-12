@@ -232,6 +232,8 @@ function renderPayment() {
 
   const freeButton =
     $("#free-booking-btn");
+  const bizum =
+  $("#bizum-payment");
 
   if (paypal) {
     paypal.innerHTML = "";
@@ -242,7 +244,9 @@ function renderPayment() {
     if (paypal) {
       paypal.style.display = "none";
     }
-
+if (bizum) {
+  bizum.style.display = "none";
+}
     if (freeButton) {
       freeButton.hidden = false;
       freeButton.style.display = "block";
@@ -255,7 +259,9 @@ function renderPayment() {
     freeButton.hidden = true;
     freeButton.style.display = "none";
   }
-
+if (bizum) {
+  bizum.style.display = "block";
+}
   if (paypal) {
     paypal.style.display = "block";
   }
