@@ -224,7 +224,16 @@ function valid() {
 /* =========================
    PAYPAL
 ========================= */
-
+document.addEventListener("click", function (e) {
+  if (e.target && e.target.id === "bizum-button") {
+    alert(
+      "📱 Pago por Bizum\n\n" +
+      "Envía el importe de tu consulta al número:\n" +
+      "604 069 395\n\n" +
+      "Después envía el justificante por WhatsApp al 711 528 435."
+    );
+  }
+});
 function renderPayment() {
 
   const paypal =
