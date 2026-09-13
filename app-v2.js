@@ -783,7 +783,6 @@ if (yearElement) {
 /* =========================
    INICIO
 ========================= */
-
 createFreeButton();
 
 render();
@@ -791,16 +790,9 @@ render();
 loadAvailability();
 
 renderPayment();
+
 const bizumButton = document.getElementById("bizum-button");
 
 if (bizumButton) {
-  bizumButton.addEventListener("click", () => {
-    alert(
-      "📱 PAGO POR BIZUM\n\n" +
-      "Envía el importe de tu consulta al Bizum:\n" +
-      "604 069 395\n\n" +
-      "Después envía el justificante por WhatsApp al:\n" +
-      "711 528 435"
-    );
-  });
+  bizumButton.addEventListener("click", createBizumBooking);
 }
