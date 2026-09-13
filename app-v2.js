@@ -7,6 +7,7 @@ const sb = supabase.createClient(
 
 const prices = {
   10: 8,
+  15: 8,
   20: 15,
   30: 23,
   60: 48
