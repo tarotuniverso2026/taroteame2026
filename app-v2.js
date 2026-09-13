@@ -220,7 +220,60 @@ function valid() {
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
   );
 }
+/* ========================
+   RESERVA POR BIZUM
+======================== */
 
+async function createBizumBooking() {
+  const name = $("#name")?.value.trim() || "";
+  const email = $("#email")?.value.trim() || "";
+
+  if (
+    !state.date ||
+    !state.time ||
+    !name ||
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  ) {
+    msg("Completa nombre, email, fecha y hora.");
+    return;
+  }
+
+  try {
+    msg("Guardando reserva por Bizum...");
+
+    const { data, error } = await sb
+      .from("bookings")
+      .insert({
+        appointment_date: state.date,
+        start_minute: state.time,
+        duration_min: state.duration,
+        customer_name: name,
+        customer_email: email,
+        payment_status: "pending",
+        status: "pending"
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    alert(
+      "Reserva creada correctamente.\n\n" +
+      "Ahora realiza el Bizum de " +
+      state.price +
+      " € al número 604 069 395.\n\n" +
+      "Después envía el justificante por WhatsApp al 711 528 435."
+    );
+
+    msg("Reserva pendiente de confirmar el pago.");
+    await loadAvailability();
+    render();
+
+  } catch (error) {
+    console.error("BIZUM BOOKING ERROR:", error);
+    msg(error.message || "No se pudo guardar la reserva por Bizum.");
+  }
+}
 /* =========================
    PAYPAL
 ========================= */
