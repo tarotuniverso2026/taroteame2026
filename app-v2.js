@@ -223,7 +223,10 @@ function valid() {
 /* ========================
    RESERVA POR BIZUM
 ======================== */
-
+function timeToMinutes(time) {
+  const [hours, minutes] = time.split(":").map(Number);
+  return hours * 60 + minutes;
+}
 async function createBizumBooking() {
   const name = $("#name")?.value.trim() || "";
   const email = $("#email")?.value.trim() || "";
@@ -245,7 +248,7 @@ async function createBizumBooking() {
       .from("bookings")
       .insert({
         appointment_date: state.date,
-        start_minute: state.time,
+        start_minute: timeToMinutes(state.time),
         duration_min: state.duration,
         customer_name: name,
         customer_email: email,
