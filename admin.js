@@ -1,4 +1,5 @@
 const cfg = window.TAROTEAME_CONFIG || {};
+
 const sb = supabase.createClient(
   cfg.SUPABASE_URL,
   cfg.SUPABASE_PUBLISHABLE_KEY
@@ -82,9 +83,7 @@ async function load() {
       if (!confirm("¿Confirmar que has recibido el Bizum?")) return;
 
       const { error } = await sb.functions.invoke("admin-approve", {
-        body: {
-          id: b.dataset.id
-        }
+        body: { id: b.dataset.id }
       });
 
       if (error) {
@@ -101,9 +100,7 @@ async function load() {
       if (!confirm("¿Cancelar esta cita?")) return;
 
       const { error } = await sb.functions.invoke("admin-cancel", {
-        body: {
-          id: b.dataset.id
-        }
+        body: { id: b.dataset.id }
       });
 
       if (error) {
@@ -114,6 +111,59 @@ async function load() {
     };
   });
 }
+
+// Mostrar/ocultar formulario de clientes
+$("#addCustomer").onclick = () => {
+  $("#customerForm").style.display = "block";
+  $("#customerMsg").textContent = "";
+};
+
+$("#cancelCustomer").onclick = () => {
+  $("#customerForm").style.display = "none";
+};
+
+// Guardar cliente sin crear reserva
+$("#saveCustomer").onclick = async () => {
+  const name = $("#customerName").value.trim();
+  const phone = $("#customerPhone").value.trim();
+  const email = $("#customerEmail").value.trim();
+  const notes = $("#customerNotes").value.trim();
+
+  if (!name) {
+    $("#customerMsg").textContent = "Escribe al menos el nombre del cliente.";
+    return;
+  }
+
+  $("#customerMsg").textContent = "Guardando cliente...";
+
+  const { error } = await sb
+    .from("customers")
+    .insert({
+      name,
+      phone: phone || null,
+      email: email || null,
+      notes: notes || null
+    });
+
+  if (error) {
+    console.error(error);
+    $("#customerMsg").textContent =
+      "No se pudo guardar el cliente. Comprueba que eres administrador.";
+    return;
+  }
+
+  $("#customerMsg").textContent = "✅ Cliente añadido correctamente.";
+
+  $("#customerName").value = "";
+  $("#customerPhone").value = "";
+  $("#customerEmail").value = "";
+  $("#customerNotes").value = "";
+
+  setTimeout(() => {
+    $("#customerForm").style.display = "none";
+    $("#customerMsg").textContent = "";
+  }, 1500);
+};
 
 $("#loginBtn").onclick = async () => {
   const { error } = await sb.auth.signInWithPassword({
@@ -137,6 +187,7 @@ async function show() {
 
   $("#login").style.display = "none";
   $("#panel").style.display = "block";
+
   $("#status").textContent =
     `Sesión iniciada como ${session.user.email}`;
 
