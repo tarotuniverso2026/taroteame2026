@@ -277,6 +277,12 @@ async function createBizumBooking() {
     msg(error.message || "No se pudo guardar la reserva por Bizum.");
   }
 }
+
+document.addEventListener("click", function (e) {
+  if (e.target.closest("#bizum-button")) {
+    createBizumBooking();
+  }
+});
 /* =========================
    PAYPAL
 ========================= */
